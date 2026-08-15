@@ -38,29 +38,93 @@ $provider = "auto"
 if ($Demo) { $provider = "fixture" }
 if ($Live) { $provider = "open-meteo" }
 
-# Windows installs the launcher as `python`; some setups only have `py`.
-$python = "python"
-if (-not (Get-Command $python -ErrorAction SilentlyContinue)) {
-    if (Get-Command "py" -ErrorAction SilentlyContinue) {
-        $python = "py"
-    } else {
-        Write-Error "Python not found. Install Python 3.11+ from https://python.org and reopen this terminal."
+# Finding a usable Python on Windows is not just "does the command exist".
+#
+# Windows ships a stub at %LOCALAPPDATA%\Microsoft\WindowsApps\python.exe that is not
+# Python at all: it prints "Python non è stato trovato / Python was not found" and
+# offers to open the Microsoft Store. `Get-Command python` finds it happily, so the
+# only reliable test is to run it and check that real Python answers back.
+function Find-Python {
+    $candidates = @(
+        @{ Exe = "py";      Prefix = @("-3") },
+        @{ Exe = "python3"; Prefix = @() },
+        @{ Exe = "python";  Prefix = @() }
+    )
+
+    foreach ($candidate in $candidates) {
+        if (-not (Get-Command $candidate.Exe -ErrorAction SilentlyContinue)) { continue }
+
+        $probe = & $candidate.Exe @($candidate.Prefix + @(
+            "-c", "import sys; print('SAILWISE_PY %d.%d' % sys.version_info[:2])"
+        )) 2>&1
+        if ($LASTEXITCODE -ne 0) { continue }
+
+        if ("$probe" -match 'SAILWISE_PY (\d+)\.(\d+)') {
+            $major = [int]$Matches[1]
+            $minor = [int]$Matches[2]
+            if ($major -eq 3 -and $minor -ge 11) {
+                return @{
+                    Exe     = $candidate.Exe
+                    Prefix  = $candidate.Prefix
+                    Version = "$major.$minor"
+                }
+            }
+            Write-Host "    skipping $($candidate.Exe): Python $major.$minor is too old (need 3.11+)" -ForegroundColor DarkYellow
+        }
     }
+    return $null
 }
 
-$version = & $python -c "import sys; print('.'.join(map(str, sys.version_info[:2])))"
-Write-Host "==> Python $version" -ForegroundColor DarkGray
+function Invoke-Python {
+    param([string[]] $Arguments)
+    & $script:py.Exe @($script:py.Prefix + $Arguments)
+}
+
+$script:py = Find-Python
+if (-not $script:py) {
+    Write-Host ""
+    Write-Host "  Python 3.11 or newer was not found." -ForegroundColor Red
+    Write-Host ""
+    Write-Host "  If you just saw 'Python non e' stato trovato' / 'Python was not found',"
+    Write-Host "  that message came from a Windows placeholder, not from Python: Windows"
+    Write-Host "  ships a stub that only opens the Microsoft Store."
+    Write-Host ""
+    Write-Host "  Install it, then open a NEW terminal:" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "      winget install Python.Python.3.12"
+    Write-Host ""
+    Write-Host "  or download it from https://www.python.org/downloads/windows/ and tick"
+    Write-Host "  'Add python.exe to PATH' during setup."
+    Write-Host ""
+    Write-Host "  If 'python' still opens the Microsoft Store afterwards, turn off the"
+    Write-Host "  aliases in Settings > Apps > Advanced app settings > App execution"
+    Write-Host "  aliases (both 'python.exe' and 'python3.exe')."
+    Write-Host ""
+    exit 1
+}
+
+Write-Host "==> Python $($script:py.Version) via '$($script:py.Exe)'" -ForegroundColor DarkGray
 
 $needsInstall = $false
-& $python -c "import fastapi" 2>$null
+Invoke-Python @("-c", "import fastapi") 2>$null
 if ($LASTEXITCODE -ne 0) { $needsInstall = $true }
-& $python -c "import sailwise_ref" 2>$null
+Invoke-Python @("-c", "import sailwise_ref") 2>$null
 if ($LASTEXITCODE -ne 0) { $needsInstall = $true }
 
 if ($needsInstall) {
     Write-Host "==> Installing dependencies (first run only)" -ForegroundColor Cyan
-    & $python -m pip install -e ./python -e ./backend
-    if ($LASTEXITCODE -ne 0) { Write-Error "Dependency installation failed." }
+    Invoke-Python @("-m", "pip", "install", "-e", "./python", "-e", "./backend")
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host ""
+        Write-Host "  Dependency installation failed. If pip reported a permissions error," -ForegroundColor Red
+        Write-Host "  try a virtual environment:" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "      $($script:py.Exe) -m venv .venv"
+        Write-Host "      .\.venv\Scripts\Activate.ps1"
+        Write-Host "      .\scripts\run_local.ps1"
+        Write-Host ""
+        exit 1
+    }
 }
 
 Write-Host ""
@@ -85,4 +149,4 @@ Set-Location (Join-Path $root "backend")
 $uvicornArgs = @("-m", "uvicorn", "app.main:app", "--host", $BindHost, "--port", $Port)
 if ($Reload) { $uvicornArgs += "--reload" }
 
-& $python @uvicornArgs
+Invoke-Python $uvicornArgs

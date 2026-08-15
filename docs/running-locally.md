@@ -163,8 +163,34 @@ repository: `cd mojo-vela` first. `Get-Location` tells you where you are.
 **`run_local.ps1 cannot be loaded because running scripts is disabled`** — see
 "If PowerShell blocks the script" above.
 
-**`python: command not found` on Windows** — Python is not on `PATH`. Reinstall from
-python.org with "Add python.exe to PATH" ticked, or use `py` instead of `python`.
+**`Python non è stato trovato` / `Python was not found`, with an offer to open the
+Microsoft Store** — this message does **not** come from Python. Windows ships a stub at
+`%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe` that exists only to send you to the
+Store, and it answers to `python` even when no Python is installed. Install the real
+thing, then open a **new** terminal:
+
+```powershell
+winget install Python.Python.3.12
+```
+
+or download it from <https://www.python.org/downloads/windows/> with "Add python.exe to
+PATH" ticked. If `python` still opens the Store afterwards, turn the stubs off in
+*Settings → Apps → Advanced app settings → App execution aliases* (both `python.exe`
+and `python3.exe`).
+
+Verify before continuing — this must print a version, not an advertisement:
+
+```powershell
+python --version
+```
+
+**`Access is denied` from pip** — install into a virtual environment instead:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+.\scripts\run_local.ps1
+```
 
 **"Nessuno spot ha ancora coordinate"** — geocoding is disabled or Nominatim is
 unreachable. Run the ingestion script, or set `SAILWISE_GEOCODING=1`.
