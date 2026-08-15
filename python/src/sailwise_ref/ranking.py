@@ -43,6 +43,8 @@ class SpotInput:
     lon: float | None
     hours: list[HourlyWeather]
     water_body: str | None = None
+    #: Machine id of the lake/sea, distinct from the display name above.
+    water_body_id: str | None = None
     accessibility: AccessibilityInput = field(default_factory=AccessibilityInput)
     #: Facility flags; None means UNKNOWN and never satisfies a hard requirement.
     has_ramp: bool | None = None
@@ -78,6 +80,7 @@ class RankedSpot:
                 "id": self.spot.id,
                 "name": self.spot.name,
                 "water_body": self.spot.water_body,
+                "water_body_id": self.spot.water_body_id,
                 "lat": self.spot.lat,
                 "lon": self.spot.lon,
                 "verified": self.spot.verified,

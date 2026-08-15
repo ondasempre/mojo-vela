@@ -104,6 +104,10 @@ All environment variables, all optional:
 | `SAILWISE_GEOCODING` | `1` | resolve missing coordinates through Nominatim |
 | `SAILWISE_FORECAST_TTL_S` | `900` | forecast cache TTL (15 min) |
 | `SAILWISE_MAX_SPOTS` | `30` | cap on spots scored per request |
+| `SAILWISE_POI` | `1` | fetch parking/food/clubs from OpenStreetMap |
+| `SAILWISE_POI_RADIUS_M` | `2000` | how far around a spot to look |
+| `WINDY_WEBCAMS_API_KEY` | *(unset)* | enables the Windy webcam adapter |
+| `SAILWISE_ICS_EVENTS` | `1` | follow club ICS calendars listed in `data/events/events.json` |
 | `SAILWISE_HOST` / `SAILWISE_PORT` | `127.0.0.1` / `8000` | bind address |
 | `SAILWISE_USER_AGENT` | SailWise + repo URL | required by the Nominatim usage policy |
 
@@ -120,6 +124,10 @@ Interactive docs at `http://127.0.0.1:8000/docs` once the server is up.
 | `GET /api/profiles` | the six profiles with their weights and bands |
 | `POST /api/recommendations` | **the primary endpoint** — ranked spots for a day |
 | `GET /api/spots/{id}/plan` | full plan for one spot |
+| `GET /api/spots/{id}/places` | 🅿️ parking (car and motorcycle), 🍝 food, 🧺 picnic, 🏛️ clubs, services |
+| `GET /api/spots/{id}/webcams` | 📷 webcams near the spot |
+| `GET /api/events?water_body=` | 🏁 regattas, courses and club events |
+| `GET /api/categories` | emoji and labels for POI categories |
 | `POST /api/cache/invalidate` | drop cached forecasts |
 
 ```bash
@@ -131,6 +139,32 @@ curl -s -X POST http://127.0.0.1:8000/api/recommendations \
 Every response carries a `meta` block with the sources, their provenance, cache state
 and age, and the safety disclaimer. `meta.demo_mode` is `true` whenever any figure in
 the response is synthetic.
+
+## The four detail tabs
+
+Selecting a spot opens four tabs under the plan:
+
+**🅿️ Servizi a terra** — car parking *and* motorcycle parking scored separately, with
+distance, fee and capacity; restaurants, osterie, bars, gelaterie; picnic areas and
+beaches; launch ramps; water, toilets, boat services. Every entry links to Google Maps,
+to driving directions, to its website and phone when OSM has them, and to its
+OpenStreetMap record so you can check or fix the source.
+
+**📷 Webcam** — cameras near the spot. Ships empty: SailWise does not publish links it
+has not verified. Add yours in `data/webcams/webcams.json`, or set
+`WINDY_WEBCAMS_API_KEY`. See [data/webcams/README.md](../data/webcams/README.md).
+
+**🏁 Eventi** — regattas, courses and club events for the lake. Also ships empty, for
+the same reason: there is no open API for the Italian sailing calendar, and inventing
+one would be worse than an empty list. Add events by hand or subscribe a club's ICS
+feed — [data/events/README.md](../data/events/README.md).
+
+**🏛️ Circoli e mappe** — sailing clubs, launch points, and one-click links to Google
+Maps, driving directions, OpenStreetMap and the Windy wind map for that position.
+
+POIs are fetched **only for the spot you open**, never for all 30 candidates: Overpass
+is donated infrastructure and one query per candidate would be slow and rude. So the
+accessibility component starts UNKNOWN and fills in as you explore.
 
 ## Reading the UI
 
@@ -147,7 +181,7 @@ the response is synthetic.
 
 ```bash
 cd python  && python3 -m pytest      # 115 tests: engine, scoring, window, safety, ranking
-cd backend && python3 -m pytest      #  26 tests: API, adapters, cache, provenance
+cd backend && python3 -m pytest      #  50 tests: API, adapters, POI, webcams, events
 ./scripts/verify_env.sh              # everything, including the Mojo core if installed
 ```
 

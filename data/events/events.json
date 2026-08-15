@@ -1,0 +1,7 @@
+{
+  "$schema": "../schemas/events.schema.json",
+  "dataset": "events",
+  "warning": "This file is EMPTY on purpose. SailWise does not ship a regatta calendar it has not verified. There is no open national API for Italian sailing events, and veleitaliane.it is a website, not an API — scraping it is out of scope. Add events by hand, or subscribe your club's ICS calendar below. See data/events/README.md.",
+  "events": [],
+  "ics_feeds": []
+}

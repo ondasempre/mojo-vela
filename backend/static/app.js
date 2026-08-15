@@ -117,6 +117,7 @@ async function boot() {
   });
   $("profile").addEventListener("change", updateProfileHint);
   $("theme-toggle").addEventListener("click", toggleTheme);
+  initTabs();
 
   await Promise.all([loadHealth(), loadSpots(), loadProfiles()]);
   search();
@@ -223,12 +224,14 @@ async function search() {
     state.results = body.data.results;
     state.meta = body.meta;
     state.selected = body.data.results[0]?.spot.id ?? null;
+    detailCache.events = {};  // the lake filter may have changed
     render(body);
   } catch (err) {
     $("error").hidden = false;
     $("error").textContent = `Non sono riuscito a calcolare i suggerimenti: ${err.message}`;
     $("hero").innerHTML = "";
     $("list").innerHTML = "";
+    $("detail").hidden = true;
   } finally {
     $("loading").hidden = true;
     $("submit").disabled = false;
@@ -255,6 +258,8 @@ function render(body) {
     $("empty").hidden = true;
     renderHero(results.find((r) => r.spot.id === state.selected) || results[0]);
     renderList(results);
+    $("detail").hidden = false;
+    loadTab(activeTab);
   }
 
   renderExcluded(excluded);
@@ -492,6 +497,7 @@ function renderList(results) {
       if (entry) {
         renderHero(entry);
         renderList(state.results);
+        loadTab(activeTab);
         $("hero").scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
@@ -528,3 +534,280 @@ function toggleTheme() {
 }
 
 boot();
+
+/* ---------------------------------------------------------------------------
+ * Detail tabs: services ashore, webcams, events, clubs.
+ *
+ * These are fetched lazily, per spot, when a tab is opened. POI lookups go to
+ * Overpass, which is donated infrastructure — fetching them for every spot in the
+ * ranking would be both slow and rude, so the ranking never does.
+ * ------------------------------------------------------------------------- */
+
+const detailCache = { places: {}, webcams: {}, events: {} };
+let activeTab = "services";
+
+function initTabs() {
+  for (const tab of document.querySelectorAll(".tab")) {
+    tab.addEventListener("click", () => selectTab(tab.dataset.tab));
+  }
+}
+
+function selectTab(name) {
+  activeTab = name;
+  for (const tab of document.querySelectorAll(".tab")) {
+    tab.setAttribute("aria-selected", String(tab.dataset.tab === name));
+  }
+  for (const panel of document.querySelectorAll(".tab-panel")) {
+    panel.hidden = panel.id !== `tab-${name}`;
+  }
+  loadTab(name);
+}
+
+function currentEntry() {
+  return state.results.find((r) => r.spot.id === state.selected) || state.results[0];
+}
+
+async function loadTab(name) {
+  const entry = currentEntry();
+  if (!entry) return;
+  const spotId = entry.spot.id;
+  const panel = $(`tab-${name}`);
+
+  if (name === "services" || name === "clubs") {
+    if (!detailCache.places[spotId]) {
+      panel.innerHTML = `<p class="empty-note"><span class="spinner"></span> Cerco su OpenStreetMap…</p>`;
+      detailCache.places[spotId] = await fetchJson(`/api/spots/${spotId}/places`);
+    }
+    const payload = detailCache.places[spotId];
+    panel.innerHTML = name === "services" ? renderServices(payload) : renderClubs(payload, entry);
+    return;
+  }
+
+  if (name === "webcams") {
+    if (!detailCache.webcams[spotId]) {
+      panel.innerHTML = `<p class="empty-note"><span class="spinner"></span> Cerco webcam…</p>`;
+      detailCache.webcams[spotId] = await fetchJson(`/api/spots/${spotId}/webcams`);
+    }
+    panel.innerHTML = renderWebcams(detailCache.webcams[spotId]);
+    return;
+  }
+
+  if (name === "events") {
+    const lake = entry.spot.water_body_id || $("water-body").value || "";
+    const key = lake || "all";
+    if (!detailCache.events[key]) {
+      panel.innerHTML = `<p class="empty-note"><span class="spinner"></span> Cerco eventi…</p>`;
+      detailCache.events[key] = await fetchJson(
+        `/api/events${lake ? `?water_body=${encodeURIComponent(lake)}` : ""}`
+      );
+    }
+    panel.innerHTML = renderEvents(detailCache.events[key]);
+  }
+}
+
+async function fetchJson(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      const detail = await response.json().catch(() => ({}));
+      return { error: detail.detail || `errore ${response.status}` };
+    }
+    return await response.json();
+  } catch (err) {
+    return { error: err.message };
+  }
+}
+
+function renderServices(payload) {
+  if (payload.error) {
+    return `<p class="empty-note">⚠ Non sono riuscito a leggere i servizi: ${escapeHtml(payload.error)}</p>`;
+  }
+  if (payload.meta?.disabled) {
+    return `<p class="empty-note">Ricerca punti di interesse disattivata (<code>SAILWISE_POI=0</code>).</p>`;
+  }
+
+  const data = payload.data;
+  const car = data.parking;
+  const moto = data.motorcycle_parking;
+
+  const parkingCards = `
+    <div class="parking-grid">
+      ${parkingCard("🚗", "Auto", car)}
+      ${parkingCard("🏍️", "Moto", moto)}
+    </div>`;
+
+  const sections = data.sections
+    .filter((section) => section.count > 0)
+    .map(
+      (section) => `
+      <section class="poi-section">
+        <h4>${section.emoji} ${escapeHtml(section.label)} <span class="poi-count">${section.count}</span></h4>
+        <ul class="poi-list">${section.places.map(poiRow).join("")}</ul>
+      </section>`
+    )
+    .join("");
+
+  const nothing = data.sections.every((s) => s.count === 0)
+    ? `<p class="empty-note">Nessun punto di interesse mappato entro ${payload.meta.radius_m} m.
+       Su OpenStreetMap questa zona è ancora scoperta — puoi contribuire tu.</p>`
+    : "";
+
+  return `
+    ${parkingCards}
+    ${sections}
+    ${nothing}
+    <p class="attribution">📍 ${escapeHtml(payload.meta.attribution)} · dati ODbL${
+      payload.meta.retrieved_at ? ` · letti il ${payload.meta.retrieved_at.slice(0, 10)}` : ""
+    }</p>`;
+}
+
+function parkingCard(emoji, label, assessment) {
+  if (!assessment || assessment.score === null) {
+    return `<div class="parking-card parking-unknown">
+      <h4>${emoji} ${label}</h4>
+      <p class="parking-score">sconosciuto</p>
+      <p class="parking-reason">${escapeHtml(assessment?.reasons?.[0] || "nessun dato")}</p>
+    </div>`;
+  }
+  const pct = Math.round(assessment.score * 100);
+  const fee = assessment.free === true ? "gratuito" : assessment.free === false ? "a pagamento" : "tariffa sconosciuta";
+  return `<div class="parking-card">
+    <h4>${emoji} ${label}</h4>
+    <p class="parking-score ${scoreClass(pct)}">${pct}<span class="unit">/100</span></p>
+    <p class="parking-reason">a ${assessment.nearest_m} m · ${fee}</p>
+    <ul class="parking-reasons">${assessment.reasons.map((r) => `<li>${escapeHtml(r)}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function poiRow(place) {
+  const bits = [];
+  if (place.distance_m !== null) bits.push(`${place.distance_m} m · ${place.walk_min} min a piedi`);
+  if (place.opening_hours) bits.push(`🕒 ${escapeHtml(place.opening_hours)}`);
+  if (place.cuisine) bits.push(`cucina: ${escapeHtml(place.cuisine.replace(/;/g, ", "))}`);
+  if (place.fee === "no") bits.push("gratuito");
+  if (place.fee === "yes") bits.push("a pagamento");
+  if (place.capacity) bits.push(`${escapeHtml(place.capacity)} posti`);
+
+  return `<li class="poi">
+    <span class="poi-emoji" aria-hidden="true">${place.emoji}</span>
+    <span class="poi-body">
+      <span class="poi-name">${escapeHtml(place.name || place.category_label)}</span>
+      <span class="poi-meta">${bits.join(" · ")}</span>
+    </span>
+    <span class="poi-links">
+      <a href="${place.maps_url}" target="_blank" rel="noopener noreferrer" title="Apri in Google Maps">🗺️</a>
+      <a href="${place.directions_url}" target="_blank" rel="noopener noreferrer" title="Indicazioni stradali">🧭</a>
+      ${place.website ? `<a href="${escapeHtml(place.website)}" target="_blank" rel="noopener noreferrer" title="Sito web">🌐</a>` : ""}
+      ${place.phone ? `<a href="tel:${escapeHtml(place.phone)}" title="Telefono">📞</a>` : ""}
+      <a href="${place.osm_url}" target="_blank" rel="noopener noreferrer" title="Scheda OpenStreetMap">🔎</a>
+    </span>
+  </li>`;
+}
+
+function renderClubs(payload, entry) {
+  if (payload.error) return `<p class="empty-note">⚠ ${escapeHtml(payload.error)}</p>`;
+
+  const data = payload.data;
+  const clubs = data.sections.find((s) => s.id === "clubs");
+  const launch = data.sections.find((s) => s.id === "launch");
+
+  const spotLinks = `
+    <div class="map-links">
+      <a class="map-button" href="${data.maps_url}" target="_blank" rel="noopener noreferrer">🗺️ Apri lo spot in Google Maps</a>
+      <a class="map-button" href="${data.directions_url}" target="_blank" rel="noopener noreferrer">🧭 Indicazioni stradali</a>
+      <a class="map-button" href="https://www.openstreetmap.org/?mlat=${entry.spot.lat}&mlon=${entry.spot.lon}#map=15/${entry.spot.lat}/${entry.spot.lon}" target="_blank" rel="noopener noreferrer">🔎 OpenStreetMap</a>
+      <a class="map-button" href="https://www.windy.com/?${entry.spot.lat},${entry.spot.lon},11" target="_blank" rel="noopener noreferrer">🌬️ Mappa vento su Windy</a>
+    </div>`;
+
+  const clubList = clubs && clubs.count
+    ? `<section class="poi-section"><h4>🏛️ Circoli velici <span class="poi-count">${clubs.count}</span></h4>
+       <ul class="poi-list">${clubs.places.map(poiRow).join("")}</ul></section>`
+    : `<p class="empty-note">🏛️ Nessun circolo velico mappato entro ${payload.meta.radius_m} m su OpenStreetMap.
+       Se ne conosci uno, aggiungerlo a OSM lo rende disponibile a tutti.</p>`;
+
+  const launchList = launch && launch.count
+    ? `<section class="poi-section"><h4>⛵ Messa in acqua <span class="poi-count">${launch.count}</span></h4>
+       <ul class="poi-list">${launch.places.map(poiRow).join("")}</ul></section>`
+    : `<p class="empty-note">⛵ Nessuno scivolo o porto mappato nel raggio di ricerca.</p>`;
+
+  return `${spotLinks}${launchList}${clubList}
+    <p class="attribution">📍 ${escapeHtml(payload.meta.attribution)}</p>`;
+}
+
+function renderWebcams(payload) {
+  if (payload.error) return `<p class="empty-note">⚠ ${escapeHtml(payload.error)}</p>`;
+
+  const cams = payload.data.webcams;
+  if (!cams.length) {
+    return `<div class="empty-note">
+      <p>📷 <strong>Nessuna webcam verificata per questo spot.</strong></p>
+      <p>SailWise non pubblica link a webcam che non ha verificato: un link a una
+         telecamera inesistente è peggio di una sezione vuota, perché ci conti e poi
+         non c'è niente.</p>
+      <p>Due strade, entrambe in <code>data/webcams/README.md</code>:
+         aggiungi le webcam che già usi in <code>data/webcams/webcams.json</code>,
+         oppure imposta <code>WINDY_WEBCAMS_API_KEY</code> per usare quelle di Windy.</p>
+    </div>`;
+  }
+
+  return `<div class="webcam-grid">${cams
+    .map(
+      (cam) => `<article class="webcam-card">
+        ${cam.image_url ? `<img src="${escapeHtml(cam.image_url)}" alt="Anteprima ${escapeHtml(cam.title)}" loading="lazy">` : `<div class="webcam-placeholder">📷</div>`}
+        <div class="webcam-body">
+          <h4>${escapeHtml(cam.title)}</h4>
+          <p class="webcam-meta">
+            ${cam.distance_km !== null ? `${cam.distance_km} km` : ""}
+            ${cam.owner ? ` · ${escapeHtml(cam.owner)}` : ""}
+            ${cam.last_updated ? ` · verificata ${escapeHtml(cam.last_updated)}` : ""}
+          </p>
+          ${cam.note ? `<p class="webcam-note">${escapeHtml(cam.note)}</p>` : ""}
+          <a class="map-button" href="${escapeHtml(cam.url)}" target="_blank" rel="noopener noreferrer">📷 Apri la webcam</a>
+        </div>
+      </article>`
+    )
+    .join("")}</div>`;
+}
+
+function renderEvents(payload) {
+  if (payload.error) return `<p class="empty-note">⚠ ${escapeHtml(payload.error)}</p>`;
+
+  const events = payload.data.events;
+  if (!events.length) {
+    return `<div class="empty-note">
+      <p>🏁 <strong>Nessun evento verificato per questo lago.</strong></p>
+      <p>Non esiste un'API aperta per il calendario velico italiano, e SailWise non
+         inventa regate. Puoi aggiungere eventi a mano in
+         <code>data/events/events.json</code>, oppure iscrivere il calendario ICS del
+         tuo circolo — istruzioni in <code>data/events/README.md</code>.</p>
+    </div>`;
+  }
+
+  return `<ul class="event-list">${events
+    .map(
+      (event) => `<li class="event">
+        <span class="event-date">
+          <span class="event-day">${escapeHtml(event.start.slice(8, 10))}</span>
+          <span class="event-month">${monthLabel(event.start)}</span>
+        </span>
+        <span class="event-body">
+          <span class="event-title">${event.emoji} ${escapeHtml(event.title)}</span>
+          <span class="event-meta">
+            ${event.location ? `📍 ${escapeHtml(event.location)}` : ""}
+            ${event.organiser ? ` · ${escapeHtml(event.organiser)}` : ""}
+            ${event.end && event.end.slice(0, 10) !== event.start.slice(0, 10) ? ` · fino al ${escapeHtml(event.end.slice(0, 10))}` : ""}
+          </span>
+          ${event.description ? `<span class="event-desc">${escapeHtml(event.description)}</span>` : ""}
+        </span>
+        ${event.url ? `<a class="event-link" href="${escapeHtml(event.url)}" target="_blank" rel="noopener noreferrer">apri ↗</a>` : ""}
+      </li>`
+    )
+    .join("")}</ul>
+    <p class="attribution">Fonti: ${payload.data.sources.map(escapeHtml).join(", ") || "—"}</p>`;
+}
+
+function monthLabel(iso) {
+  const months = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+  const index = parseInt(iso.slice(5, 7), 10) - 1;
+  return months[index] || "";
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "../schemas/webcams.schema.json",
+  "dataset": "webcams",
+  "warning": "This file is EMPTY on purpose. SailWise does not ship webcam URLs it has not verified: a link to a camera that does not exist is worse than an empty section, because a sailor plans around having a look and then has nothing. Add cameras you actually use — see data/webcams/README.md.",
+  "attribution_note": "Each webcam belongs to whoever operates it. Record the owner, link to their page rather than hotlinking their image where their terms require it, and respect any embedding restrictions.",
+  "webcams": [],
+  "ics_note": "Not applicable to webcams; see data/events/events.json for calendar feeds."
+}

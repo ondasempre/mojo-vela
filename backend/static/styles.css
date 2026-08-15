@@ -332,3 +332,134 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
   .component .bar-track { grid-column: 1 / -1; }
   .row { grid-template-columns: 32px 1fr auto; gap: 10px; padding: 12px; }
 }
+
+/* --- detail tabs -------------------------------------------------------- */
+
+.detail { padding: 0 0 18px; margin-bottom: 18px; overflow: hidden; }
+
+.tabs {
+  display: flex; gap: 2px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border); background: var(--bg);
+  padding: 6px 6px 0;
+}
+.tab {
+  font: inherit; font-weight: 600; font-size: .9rem;
+  padding: 10px 16px; border: 0; border-radius: 8px 8px 0 0;
+  background: transparent; color: var(--text-soft); cursor: pointer;
+}
+.tab:hover { color: var(--text); background: var(--surface); }
+.tab[aria-selected="true"] {
+  background: var(--surface); color: var(--text);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+.tab-panel { padding: 20px; }
+
+.empty-note {
+  color: var(--text-soft); font-size: .92rem; line-height: 1.6;
+  background: var(--bg); border: 1px dashed var(--border);
+  border-radius: 10px; padding: 16px;
+}
+.empty-note p { margin: 0 0 8px; }
+.empty-note p:last-child { margin-bottom: 0; }
+.empty-note code {
+  font-family: var(--mono); font-size: .85em;
+  background: var(--surface); padding: 1px 5px; border-radius: 4px;
+}
+
+.attribution { margin: 16px 0 0; font-size: .78rem; color: var(--text-soft); }
+
+/* --- parking cards ------------------------------------------------------ */
+
+.parking-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px; margin-bottom: 22px;
+}
+.parking-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.parking-card h4 { margin: 0 0 6px; font-size: .95rem; }
+.parking-score { margin: 0; font-size: 1.7rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.parking-score .unit { font-size: .8rem; font-weight: 400; color: var(--text-soft); }
+.parking-unknown .parking-score { font-size: 1.05rem; font-style: italic; color: var(--text-soft); }
+.parking-reason { margin: 4px 0 0; font-size: .86rem; color: var(--text-soft); }
+.parking-reasons {
+  margin: 8px 0 0; padding-left: 18px; font-size: .8rem; color: var(--text-soft);
+}
+.parking-reasons li { margin-bottom: 2px; }
+
+/* --- POI lists ---------------------------------------------------------- */
+
+.poi-section { margin-bottom: 22px; }
+.poi-section h4 {
+  margin: 0 0 10px; font-size: .84rem; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--text-soft);
+}
+.poi-count {
+  display: inline-block; background: var(--foam); color: var(--text-soft);
+  border-radius: 999px; padding: 1px 8px; font-size: .78rem; margin-left: 4px;
+}
+.poi-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.poi {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
+  padding: 9px 12px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 9px;
+}
+.poi-emoji { font-size: 1.15rem; }
+.poi-body { min-width: 0; }
+.poi-name { font-weight: 600; font-size: .92rem; }
+.poi-meta { display: block; font-size: .8rem; color: var(--text-soft); }
+.poi-links { display: flex; gap: 8px; font-size: 1.05rem; }
+.poi-links a { text-decoration: none; opacity: .75; }
+.poi-links a:hover { opacity: 1; }
+
+/* --- map link buttons --------------------------------------------------- */
+
+.map-links { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
+.map-button {
+  display: inline-block; font-size: .87rem; font-weight: 600; text-decoration: none;
+  padding: 9px 14px; border-radius: 8px;
+  background: var(--foam); color: var(--text); border: 1px solid var(--border);
+}
+.map-button:hover { border-color: var(--accent); }
+
+/* --- webcams ------------------------------------------------------------ */
+
+.webcam-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px;
+}
+.webcam-card {
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg);
+}
+.webcam-card img { width: 100%; height: 150px; object-fit: cover; display: block; }
+.webcam-placeholder {
+  height: 150px; display: grid; place-items: center; font-size: 2.5rem;
+  background: var(--foam); color: var(--text-soft);
+}
+.webcam-body { padding: 12px 14px; }
+.webcam-body h4 { margin: 0 0 4px; font-size: .95rem; }
+.webcam-meta, .webcam-note { margin: 0 0 8px; font-size: .8rem; color: var(--text-soft); }
+
+/* --- events ------------------------------------------------------------- */
+
+.event-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.event {
+  display: grid; grid-template-columns: 56px 1fr auto; gap: 14px; align-items: center;
+  padding: 12px 14px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.event-date {
+  text-align: center; background: var(--foam); border-radius: 8px; padding: 6px 4px;
+}
+.event-day { display: block; font-size: 1.3rem; font-weight: 700; line-height: 1; }
+.event-month { display: block; font-size: .72rem; text-transform: uppercase; color: var(--text-soft); }
+.event-title { font-weight: 650; display: block; }
+.event-meta, .event-desc { display: block; font-size: .82rem; color: var(--text-soft); }
+.event-link { font-size: .84rem; text-decoration: none; color: var(--accent); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .poi { grid-template-columns: auto 1fr; }
+  .poi-links { grid-column: 1 / -1; justify-content: flex-end; }
+  .tab { padding: 9px 11px; font-size: .84rem; }
+  .tab-panel { padding: 14px; }
+}

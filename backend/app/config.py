@@ -42,6 +42,17 @@ class Settings:
     #: Cap on spots scored per request, so one request cannot fan out unbounded.
     max_spots_per_request: int = _env_int("SAILWISE_MAX_SPOTS", 30)
 
+    #: Fetch parking, food, picnic and club data from OpenStreetMap (Overpass).
+    poi_enabled: bool = _env_bool("SAILWISE_POI", True)
+    poi_radius_m: int = _env_int("SAILWISE_POI_RADIUS_M", 2000)
+
+    #: Windy Webcams needs a key and acceptance of Windy's terms (ADR 0002).
+    #: Without it, only the curated webcam list in data/webcams/ is used.
+    windy_webcams_api_key: str = os.environ.get("WINDY_WEBCAMS_API_KEY", "")
+
+    #: Follow ICS calendar feeds listed in data/events/events.json.
+    ics_events_enabled: bool = _env_bool("SAILWISE_ICS_EVENTS", True)
+
     host: str = os.environ.get("SAILWISE_HOST", "127.0.0.1")
     port: int = _env_int("SAILWISE_PORT", 8000)
 

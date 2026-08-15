@@ -36,6 +36,16 @@ class PlanningService:
         self._cache = cache
         self._ttl = forecast_ttl_s
         self._max_spots = max_spots
+        self._places = None
+
+    def attach_places(self, places) -> None:
+        """Optional PlacesService, used for accessibility when POI data is cached.
+
+        Ranking never *fetches* POIs — that would mean one Overpass query per
+        candidate. It only uses what opening a spot has already cached, so
+        accessibility fills in as you explore rather than blocking a ranking.
+        """
+        self._places = places
 
     # --- forecasts --------------------------------------------------------
 
@@ -166,8 +176,9 @@ class PlanningService:
                     lon=spot.lon,
                     hours=hours,
                     water_body=spot.water_body_name or spot.water_body,
-                    accessibility=_accessibility_for(spot),
-                    has_ramp=spot.has_ramp,
+                    water_body_id=spot.water_body,
+                    accessibility=self._accessibility_for(spot),
+                    has_ramp=self._has_ramp(spot),
                     verified=spot.verified,
                 )
             )
@@ -231,8 +242,9 @@ class PlanningService:
                     lon=spot.lon,
                     hours=hours,
                     water_body=spot.water_body_name or spot.water_body,
-                    accessibility=_accessibility_for(spot),
-                    has_ramp=spot.has_ramp,
+                    water_body_id=spot.water_body,
+                    accessibility=self._accessibility_for(spot),
+                    has_ramp=self._has_ramp(spot),
                     verified=spot.verified,
                 )
             ],
@@ -260,12 +272,34 @@ class PlanningService:
         }
 
 
-def _accessibility_for(spot: Spot) -> AccessibilityInput:
+    def _cached_places(self, spot: Spot):
+        if self._places is None or spot.lat is None or spot.lon is None:
+            return None
+        return self._places.cached_places(spot.lat, spot.lon)
+
+    def _accessibility_for(self, spot: Spot) -> AccessibilityInput:
+        """Real POI data when we have it cached, the ingested dataset otherwise."""
+        cached = self._cached_places(spot)
+        if cached is not None and cached.places:
+            return self._places.accessibility_from(cached)
+        return _accessibility_from_dataset(spot)
+
+    def _has_ramp(self, spot: Spot) -> bool | None:
+        """True only on evidence. No evidence stays None, which never satisfies a filter."""
+        cached = self._cached_places(spot)
+        if cached is not None and cached.places:
+            grouped = cached.by_category()
+            if grouped.get("slipway") or grouped.get("marina"):
+                return True
+        return spot.has_ramp
+
+
+def _accessibility_from_dataset(spot: Spot) -> AccessibilityInput:
     """Only what is actually known. Everything else stays UNKNOWN (FR-P-03).
 
-    Until `scripts/fetch_spots.py` has populated facilities, this is empty for most
-    spots — which is why the accessibility component shows UNKNOWN in the UI instead
-    of a made-up 7/10.
+    Until POIs have been fetched for this spot, this is empty for most of them —
+    which is why the accessibility component shows UNKNOWN in the UI instead of a
+    made-up 7/10.
     """
     facilities = spot.facilities or {}
     launch = facilities.get("launch_point")

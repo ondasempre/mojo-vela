@@ -23,10 +23,14 @@ from sailwise_ref.profiles import PROFILES, ProfileId, get_profile
 from sailwise_ref.safety import DISCLAIMER
 
 from .adapters.cache_memory import MemoryCache
+from .adapters.events import CuratedEventsProvider, IcsEventsProvider
 from .adapters.geo_nominatim import NominatimGeocoder
+from .adapters.poi_overpass import OverpassPoiProvider
 from .adapters.weather_fixture import FixtureWeatherProvider
 from .adapters.weather_open_meteo import OpenMeteoProvider
+from .adapters.webcams import CuratedWebcamProvider, WindyWebcamProvider
 from .config import get_settings
+from .services.places import PlacesService, category_metadata
 from .services.planning import PlanningService
 from .services.spots import SpotService
 
@@ -79,6 +83,21 @@ class Container:
             forecast_ttl_s=self.settings.forecast_ttl_s,
             max_spots=self.settings.max_spots_per_request,
         )
+
+        self.places = PlacesService(
+            poi=OverpassPoiProvider(self.client, self.settings.user_agent),
+            cache=self.cache,
+            curated_webcams=CuratedWebcamProvider(self.settings.data_dir),
+            curated_events=CuratedEventsProvider(self.settings.data_dir),
+            windy_webcams=(
+                WindyWebcamProvider(self.client, self.settings.windy_webcams_api_key)
+                if self.settings.windy_webcams_api_key
+                else None
+            ),
+            ics=IcsEventsProvider(self.client) if self.settings.ics_events_enabled else None,
+            radius_m=self.settings.poi_radius_m,
+        )
+        self.planning.attach_places(self.places if self.settings.poi_enabled else None)
 
     async def aclose(self) -> None:
         await self.client.aclose()
@@ -146,6 +165,8 @@ async def health() -> dict:
         "weather_provider": c.provider.id,
         "configured_mode": c.settings.weather_provider,
         "geocoding_enabled": c.settings.geocoding_enabled,
+        "poi_enabled": c.settings.poi_enabled,
+        "windy_webcams": bool(c.settings.windy_webcams_api_key),
         "spots": c.spots.status(),
         "cache": c.cache.stats(),
         "disclaimer": DISCLAIMER,
@@ -250,6 +271,89 @@ async def plan(
     if result["data"] is None:
         raise HTTPException(503, result.get("error") or "forecast unavailable")
     return result
+
+
+@app.get("/api/spots/{spot_id}/places")
+async def places(spot_id: str, refresh: bool = False) -> dict:
+    """Parking (car and motorcycle), food, picnic areas, clubs and services.
+
+    Fetched on demand for one spot rather than for every candidate in a ranking:
+    Overpass is donated infrastructure and one query per candidate would be both slow
+    and rude (see services/places.py).
+    """
+    c = deps()
+    spot = c.spots.get(spot_id)
+    if spot is None:
+        raise HTTPException(404, f"unknown spot: {spot_id}")
+    await c.spots.resolve(spot)
+    if spot.lat is None:
+        raise HTTPException(409, "this spot has no coordinates yet")
+
+    if not c.settings.poi_enabled:
+        return {
+            "data": {"sections": [], "parking": None, "motorcycle_parking": None},
+            "meta": {"disabled": True, "note": "POI lookup disabled (SAILWISE_POI=0)"},
+        }
+
+    result = await c.places.places_for(spot.lat, spot.lon, force=refresh)
+    return {
+        "data": {
+            "spot": spot.as_dict(),
+            "sections": c.places.sections_from(result),
+            "parking": c.places.assess_parking(result).as_dict(),
+            "motorcycle_parking": c.places.assess_parking(result, motorcycle=True).as_dict(),
+            "total": len(result.places),
+            "maps_url": (
+                f"https://www.google.com/maps/search/?api=1&query={spot.lat:.6f},{spot.lon:.6f}"
+            ),
+            "directions_url": (
+                f"https://www.google.com/maps/dir/?api=1&destination={spot.lat:.6f},{spot.lon:.6f}"
+            ),
+        },
+        "meta": {
+            "attribution": result.attribution,
+            "retrieved_at": result.retrieved_at,
+            "error": result.error,
+            "radius_m": c.settings.poi_radius_m,
+        },
+    }
+
+
+@app.get("/api/spots/{spot_id}/webcams")
+async def webcams(spot_id: str) -> dict:
+    c = deps()
+    spot = c.spots.get(spot_id)
+    if spot is None:
+        raise HTTPException(404, f"unknown spot: {spot_id}")
+    await c.spots.resolve(spot)
+    if spot.lat is None:
+        raise HTTPException(409, "this spot has no coordinates yet")
+
+    result = await c.places.webcams_for(spot.lat, spot.lon, spot.water_body)
+    return {
+        "data": result.as_dict(),
+        "meta": {
+            "note": (
+                "SailWise non pubblica webcam non verificate. Aggiungi le tue in "
+                "data/webcams/webcams.json, oppure imposta WINDY_WEBCAMS_API_KEY."
+            )
+            if not result.webcams
+            else None
+        },
+    }
+
+
+@app.get("/api/events")
+async def events(water_body: str | None = None) -> dict:
+    c = deps()
+    result = await c.places.events_for(water_body)
+    return {"data": result.as_dict(), "meta": {"water_body": water_body}}
+
+
+@app.get("/api/categories")
+async def categories() -> dict:
+    """Emoji and labels for POI categories, so the UI keeps no second copy."""
+    return {"data": category_metadata()}
 
 
 @app.post("/api/cache/invalidate")
