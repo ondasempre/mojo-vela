@@ -1,0 +1,60 @@
+{
+  "$schema": "../schemas/sailing_spot.schema.json",
+  "dataset": "lago_di_como",
+  "status": "pending_ingestion",
+  "warning": "This is a SEED file. It lists which places the Lake Como dataset should cover; it contains NO geographic or commercial data. Every coordinate and facility field is null on purpose. Populate it with scripts/fetch_spots.py, which records a source and a retrieval date for every value it writes. Do not fill these fields by hand from memory.",
+  "licence_note": "Once populated from OpenStreetMap, this file is ODbL and requires attribution to '© OpenStreetMap contributors'. See data/README.md.",
+  "water_body": {
+    "id": "lago_di_como",
+    "name": "Lago di Como",
+    "type": "LAKE",
+    "country": "IT",
+    "region": "Lombardia"
+  },
+  "spots": [
+    {
+      "id": "dervio",
+      "name": "Dervio",
+      "query": "Dervio, Lecco, Lombardia, Italia",
+      "priority": 1,
+      "role": "primary home spot for MVP 1",
+      "lat": null,
+      "lon": null,
+      "difficulty": null,
+      "exposure_sectors": null,
+      "preferred_wind_dir": null,
+      "facilities": {
+        "launch_point": null,
+        "marina": null,
+        "parking": null,
+        "restaurants": null,
+        "fuel": null,
+        "boat_services": null,
+        "sailing_clubs": null
+      },
+      "source": null,
+      "source_ref": null,
+      "retrieved_at": null,
+      "verified_by": null,
+      "verified_at": null,
+      "status": "pending_ingestion"
+    },
+    { "id": "corenno_plinio", "name": "Corenno Plinio", "query": "Corenno Plinio, Dervio, Lecco, Italia", "priority": 2, "status": "pending_ingestion" },
+    { "id": "dorio", "name": "Dorio", "query": "Dorio, Lecco, Italia", "priority": 2, "status": "pending_ingestion" },
+    { "id": "bellano", "name": "Bellano", "query": "Bellano, Lecco, Italia", "priority": 2, "status": "pending_ingestion" },
+    { "id": "colico", "name": "Colico", "query": "Colico, Lecco, Italia", "priority": 1, "status": "pending_ingestion" },
+    { "id": "dongo", "name": "Dongo", "query": "Dongo, Como, Italia", "priority": 2, "status": "pending_ingestion" },
+    { "id": "gravedona", "name": "Gravedona ed Uniti", "query": "Gravedona ed Uniti, Como, Italia", "priority": 2, "status": "pending_ingestion" },
+    { "id": "menaggio", "name": "Menaggio", "query": "Menaggio, Como, Italia", "priority": 2, "status": "pending_ingestion" }
+  ],
+  "ingestion": {
+    "geocoder": "nominatim",
+    "poi_source": "overpass",
+    "usage_policy": "Public Nominatim: max 1 request/second, identifying User-Agent required, no systematic/bulk querying. For more than a handful of spots use a Geofabrik extract instead.",
+    "poi_radius_m": 1500,
+    "poi_categories": [
+      "slipway", "marina", "parking", "restaurant", "bar", "cafe",
+      "fuel", "sailing_club", "shower", "drinking_water"
+    ]
+  }
+}

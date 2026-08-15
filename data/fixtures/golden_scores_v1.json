@@ -1,0 +1,267 @@
+{
+  "generated_by": "scripts/gen_golden.py",
+  "model_version": "1.0.0",
+  "fixture": "day_dervio_synthetic",
+  "warning": "Generated file. Do not edit by hand. Regenerate with scripts/gen_golden.py.",
+  "wind": {
+    "mean_kn": 10.222222222222221,
+    "max_kn": 15.0,
+    "min_kn": 5.0,
+    "gust_max_kn": 17.8,
+    "gust_mean_kn": 12.922222222222222,
+    "stdev_kn": 3.292340531117567,
+    "cv": 0.32207679108758813,
+    "gust_factor": 1.2641304347826088,
+    "consistency": 0.46320534818735304,
+    "slope_kn_per_h": 0.4666666666666667,
+    "trend": "RISING_THEN_EASING"
+  },
+  "profiles": {
+    "RELAX": {
+      "total": 85.03078545666814,
+      "confidence": 0.95,
+      "components": {
+        "wind_quality": {
+          "raw": 0.9259259259259258,
+          "points": 21.44249512670565,
+          "max_points": 23.157894736842106
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 12.640921908909858,
+          "max_points": 23.157894736842106
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 14.73684210526316,
+          "max_points": 16.842105263157894
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 9.894736842105262,
+          "max_points": 10.526315789473685
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 14.736842105263161,
+          "max_points": 14.736842105263161
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 11.578947368421053,
+          "max_points": 11.578947368421053
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 5.2631578947368425
+        }
+      }
+    },
+    "CRUISING": {
+      "total": 84.4820294412098,
+      "confidence": 0.9,
+      "components": {
+        "wind_quality": {
+          "raw": 0.9305555555555556,
+          "points": 31.01851851851852,
+          "max_points": 33.333333333333336
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 12.130177589357945,
+          "max_points": 22.22222222222222
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 19.444444444444443,
+          "max_points": 22.22222222222222
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 5.222222222222221,
+          "max_points": 5.555555555555555
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 11.11111111111111,
+          "max_points": 11.11111111111111
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 5.555555555555555,
+          "max_points": 5.555555555555555
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 11.11111111111111
+        }
+      }
+    },
+    "TRAINING": {
+      "total": 79.40498981835923,
+      "confidence": 0.94,
+      "components": {
+        "wind_quality": {
+          "raw": 0.8666666666666667,
+          "points": 31.34751773049645,
+          "max_points": 36.17021276595744
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 16.259599747437242,
+          "max_points": 29.78723404255319
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 13.03191489361702,
+          "max_points": 14.893617021276595
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 5.999999999999998,
+          "max_points": 6.382978723404254
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 6.382978723404254,
+          "max_points": 6.382978723404254
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 6.382978723404254,
+          "max_points": 6.382978723404254
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 6.382978723404254
+        }
+      }
+    },
+    "RACING": {
+      "total": 78.26497136060274,
+      "confidence": 0.94,
+      "components": {
+        "wind_quality": {
+          "raw": 0.8666666666666667,
+          "points": 35.03546099290781,
+          "max_points": 40.42553191489362
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 17.42099972939705,
+          "max_points": 31.914893617021278
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 11.170212765957448,
+          "max_points": 12.765957446808512
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 4.0,
+          "max_points": 4.25531914893617
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 3.191489361702128,
+          "max_points": 3.191489361702128
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 7.4468085106382995,
+          "max_points": 7.4468085106382995
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 6.382978723404256
+        }
+      }
+    },
+    "FAMILY": {
+      "total": 82.80731469517485,
+      "confidence": 0.9400000000000001,
+      "components": {
+        "wind_quality": {
+          "raw": 0.8222222222222223,
+          "points": 15.74468085106383,
+          "max_points": 19.148936170212764
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 12.775399801557834,
+          "max_points": 23.404255319148934
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 16.75531914893617,
+          "max_points": 19.148936170212764
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 11.999999999999998,
+          "max_points": 12.76595744680851
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 14.893617021276597,
+          "max_points": 14.893617021276597
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 10.638297872340425,
+          "max_points": 10.638297872340425
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 6.382978723404255
+        }
+      }
+    },
+    "SPORT": {
+      "total": 65.87821614556043,
+      "confidence": 0.9,
+      "components": {
+        "wind_quality": {
+          "raw": 0.40740740740740733,
+          "points": 16.296296296296294,
+          "max_points": 40.0
+        },
+        "wind_stability": {
+          "raw": 0.5458579915211075,
+          "points": 9.704142071486356,
+          "max_points": 17.77777777777778
+        },
+        "weather": {
+          "raw": 0.875,
+          "points": 13.611111111111112,
+          "max_points": 15.555555555555557
+        },
+        "rain": {
+          "raw": 0.94,
+          "points": 6.266666666666666,
+          "max_points": 6.666666666666666
+        },
+        "temperature": {
+          "raw": 1.0,
+          "points": 6.666666666666666,
+          "max_points": 6.666666666666666
+        },
+        "water_conditions": {
+          "raw": 1.0,
+          "points": 13.333333333333332,
+          "max_points": 13.333333333333332
+        },
+        "accessibility": {
+          "raw": null,
+          "points": 0.0,
+          "max_points": 11.11111111111111
+        }
+      }
+    }
+  }
+}
