@@ -136,16 +136,28 @@ def score_wind_stability(stats: WindStats) -> float:
 
 
 def score_weather(hours: list[HourlyWeather]) -> float:
+    """Thunderstorm risk, visibility and cloud.
+
+    Visibility is optional: several forecast models do not publish it. When it is
+    missing the term is dropped and the remaining weights are renormalised, rather
+    than assuming clear air (FR-P-03). With visibility present the weights already
+    sum to 1, so this path is exactly equivalent to the simple weighted sum.
+    """
     storm_max = max(h.storm_prob for h in hours)
-    vis_min = min(h.visibility_m for h in hours)
     cloud_mean = mean([h.cloud_frac for h in hours])
 
-    vis_score = clamp01((vis_min - K.VIS_BAD_M) / (K.VIS_GOOD_M - K.VIS_BAD_M))
-    return (
-        K.W_STORM * (1.0 - clamp01(storm_max))
-        + K.W_VIS * vis_score
-        + K.W_CLOUD * (1.0 - K.CLOUD_PENALTY * clamp01(cloud_mean))
-    )
+    terms: list[tuple[float, float]] = [
+        (K.W_STORM, 1.0 - clamp01(storm_max)),
+        (K.W_CLOUD, 1.0 - K.CLOUD_PENALTY * clamp01(cloud_mean)),
+    ]
+
+    known_vis = [h.visibility_m for h in hours if h.visibility_m is not None]
+    if known_vis:
+        vis_score = clamp01((min(known_vis) - K.VIS_BAD_M) / (K.VIS_GOOD_M - K.VIS_BAD_M))
+        terms.append((K.W_VIS, vis_score))
+
+    weight_sum = sum(w for w, _ in terms)
+    return sum(w * v for w, v in terms) / weight_sum
 
 
 def score_rain(hours: list[HourlyWeather]) -> float:

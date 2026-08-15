@@ -23,15 +23,16 @@ hardcodes a body of water.
 
 ## Status
 
-**Milestone 1 of 10.** The architecture is designed in full; the compute core exists
-and is tested; there is no web service yet. See [docs/10-roadmap.md](docs/10-roadmap.md).
+**Milestones 1–4 of 10.** The app runs locally: real forecasts, ranked spots, safety
+warnings and a web UI. See [docs/10-roadmap.md](docs/10-roadmap.md).
 
 | Component | State |
 |---|---|
 | Architecture & specification | complete — [docs/](docs/ARCHITECTURE.md) |
-| Python reference implementation | working, tested (79 tests) |
+| Scoring, best window, safety gates, ranking | working, tested (115 tests) |
+| API + web UI, Open-Meteo adapter, cache | working, tested (26 tests) |
 | Mojo compute core | written; **not yet compiled** — see the caveat below |
-| Weather providers, API, database, UI | designed, not built (M4+) |
+| Database, accounts, sailing log, AI | designed, not built (M6+) |
 
 > **Honest caveat.** The environment that produced this repository had no access to
 > the Modular package channels, so the Mojo sources have never been compiled. The
@@ -43,15 +44,30 @@ and is tested; there is no web service yet. See [docs/10-roadmap.md](docs/10-roa
 ## Quickstart
 
 ```bash
-# Python reference implementation — no third-party dependencies
+./scripts/run_local.sh            # → http://127.0.0.1:8000
+./scripts/run_local.sh --demo     # synthetic data, fully offline
+```
+
+That starts the API and the web UI in one process. No API key needed: the default
+weather provider's free tier requires none. Full guide:
+[docs/running-locally.md](docs/running-locally.md).
+
+The spot dataset ships without coordinates on purpose, so the first run resolves them
+in the background (one request per second, priority order, cached to disk afterwards).
+Dervio and Colico are available within seconds; all 33 spots inside a minute.
+
+Other entry points:
+
+```bash
+# the engine on its own, no server
 cd python && pip install -e '.[dev]' && pytest
 PYTHONPATH=src python3 -m sailwise_ref.cli --all-profiles
 
-# Mojo compute core
+# the Mojo compute core
 curl -fsSL https://pixi.sh/install.sh | sh
 cd mojo && pixi install && pixi run test && pixi run demo
 
-# Everything at once
+# everything at once
 ./scripts/verify_env.sh
 ```
 

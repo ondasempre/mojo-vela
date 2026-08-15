@@ -1,0 +1,67 @@
+{
+  "$schema": "../schemas/sailing_spot.schema.json",
+  "dataset": "italian_lakes",
+  "status": "pending_ingestion",
+  "warning": "SEED FILE — contains NO geographic data. Each entry is a geocoding QUERY STRING, not an asserted position, and every coordinate field is absent on purpose. Coordinates are resolved at runtime through Nominatim (cached) or in batch through scripts/fetch_spots.py, and each resolved spot carries the source, the retrieval date and the resolver's display_name so a human can confirm it landed where intended. Nothing here is verified until someone marks it verified.",
+  "licence_note": "Once resolved from OpenStreetMap this data is ODbL and requires attribution to '© OpenStreetMap contributors'. See data/README.md.",
+  "verification_note": "The lake each entry is grouped under is a starting hypothesis for the query, not a verified fact. Check the resolved display_name before marking a spot verified.",
+  "water_bodies": [
+    { "id": "lago_di_como", "name": "Lago di Como", "type": "LAKE", "country": "IT", "region": "Lombardia", "timezone": "Europe/Rome" },
+    { "id": "lago_di_garda", "name": "Lago di Garda", "type": "LAKE", "country": "IT", "region": "Lombardia/Veneto/Trentino", "timezone": "Europe/Rome" },
+    { "id": "lago_maggiore", "name": "Lago Maggiore", "type": "LAKE", "country": "IT", "region": "Piemonte/Lombardia", "timezone": "Europe/Rome" },
+    { "id": "lago_iseo", "name": "Lago d'Iseo", "type": "LAKE", "country": "IT", "region": "Lombardia", "timezone": "Europe/Rome" },
+    { "id": "lago_orta", "name": "Lago d'Orta", "type": "LAKE", "country": "IT", "region": "Piemonte", "timezone": "Europe/Rome" },
+    { "id": "lago_trasimeno", "name": "Lago Trasimeno", "type": "LAKE", "country": "IT", "region": "Umbria", "timezone": "Europe/Rome" },
+    { "id": "lago_bracciano", "name": "Lago di Bracciano", "type": "LAKE", "country": "IT", "region": "Lazio", "timezone": "Europe/Rome" },
+    { "id": "lago_bolsena", "name": "Lago di Bolsena", "type": "LAKE", "country": "IT", "region": "Lazio", "timezone": "Europe/Rome" }
+  ],
+  "spots": [
+    { "id": "dervio", "name": "Dervio", "water_body": "lago_di_como", "query": "Dervio, Lecco, Lombardia, Italia", "priority": 1 },
+    { "id": "corenno_plinio", "name": "Corenno Plinio", "water_body": "lago_di_como", "query": "Corenno Plinio, Dervio, Lecco, Italia", "priority": 2 },
+    { "id": "dorio", "name": "Dorio", "water_body": "lago_di_como", "query": "Dorio, Lecco, Italia", "priority": 2 },
+    { "id": "bellano", "name": "Bellano", "water_body": "lago_di_como", "query": "Bellano, Lecco, Italia", "priority": 2 },
+    { "id": "colico", "name": "Colico", "water_body": "lago_di_como", "query": "Colico, Lecco, Italia", "priority": 1 },
+    { "id": "dongo", "name": "Dongo", "water_body": "lago_di_como", "query": "Dongo, Como, Italia", "priority": 2 },
+    { "id": "gravedona", "name": "Gravedona ed Uniti", "water_body": "lago_di_como", "query": "Gravedona ed Uniti, Como, Italia", "priority": 2 },
+    { "id": "menaggio", "name": "Menaggio", "water_body": "lago_di_como", "query": "Menaggio, Como, Italia", "priority": 2 },
+    { "id": "lecco", "name": "Lecco", "water_body": "lago_di_como", "query": "Lecco, Lombardia, Italia", "priority": 3 },
+    { "id": "abbadia_lariana", "name": "Abbadia Lariana", "water_body": "lago_di_como", "query": "Abbadia Lariana, Lecco, Italia", "priority": 3 },
+
+    { "id": "torbole", "name": "Torbole", "water_body": "lago_di_garda", "query": "Torbole sul Garda, Trento, Italia", "priority": 1 },
+    { "id": "riva_del_garda", "name": "Riva del Garda", "water_body": "lago_di_garda", "query": "Riva del Garda, Trento, Italia", "priority": 1 },
+    { "id": "malcesine", "name": "Malcesine", "water_body": "lago_di_garda", "query": "Malcesine, Verona, Italia", "priority": 2 },
+    { "id": "campione_del_garda", "name": "Campione del Garda", "water_body": "lago_di_garda", "query": "Campione del Garda, Brescia, Italia", "priority": 2 },
+    { "id": "gargnano", "name": "Gargnano", "water_body": "lago_di_garda", "query": "Gargnano, Brescia, Italia", "priority": 2 },
+    { "id": "desenzano", "name": "Desenzano del Garda", "water_body": "lago_di_garda", "query": "Desenzano del Garda, Brescia, Italia", "priority": 2 },
+
+    { "id": "verbania", "name": "Verbania", "water_body": "lago_maggiore", "query": "Verbania, Verbano-Cusio-Ossola, Italia", "priority": 1 },
+    { "id": "stresa", "name": "Stresa", "water_body": "lago_maggiore", "query": "Stresa, Verbano-Cusio-Ossola, Italia", "priority": 2 },
+    { "id": "cannobio", "name": "Cannobio", "water_body": "lago_maggiore", "query": "Cannobio, Verbano-Cusio-Ossola, Italia", "priority": 2 },
+    { "id": "luino", "name": "Luino", "water_body": "lago_maggiore", "query": "Luino, Varese, Italia", "priority": 2 },
+    { "id": "arona", "name": "Arona", "water_body": "lago_maggiore", "query": "Arona, Novara, Italia", "priority": 3 },
+
+    { "id": "iseo", "name": "Iseo", "water_body": "lago_iseo", "query": "Iseo, Brescia, Italia", "priority": 2 },
+    { "id": "lovere", "name": "Lovere", "water_body": "lago_iseo", "query": "Lovere, Bergamo, Italia", "priority": 2 },
+    { "id": "sarnico", "name": "Sarnico", "water_body": "lago_iseo", "query": "Sarnico, Bergamo, Italia", "priority": 3 },
+
+    { "id": "orta_san_giulio", "name": "Orta San Giulio", "water_body": "lago_orta", "query": "Orta San Giulio, Novara, Italia", "priority": 3 },
+    { "id": "omegna", "name": "Omegna", "water_body": "lago_orta", "query": "Omegna, Verbano-Cusio-Ossola, Italia", "priority": 3 },
+
+    { "id": "castiglione_del_lago", "name": "Castiglione del Lago", "water_body": "lago_trasimeno", "query": "Castiglione del Lago, Perugia, Italia", "priority": 3 },
+    { "id": "passignano", "name": "Passignano sul Trasimeno", "water_body": "lago_trasimeno", "query": "Passignano sul Trasimeno, Perugia, Italia", "priority": 3 },
+
+    { "id": "bracciano", "name": "Bracciano", "water_body": "lago_bracciano", "query": "Bracciano, Roma, Italia", "priority": 3 },
+    { "id": "anguillara", "name": "Anguillara Sabazia", "water_body": "lago_bracciano", "query": "Anguillara Sabazia, Roma, Italia", "priority": 3 },
+    { "id": "trevignano", "name": "Trevignano Romano", "water_body": "lago_bracciano", "query": "Trevignano Romano, Roma, Italia", "priority": 3 },
+
+    { "id": "bolsena", "name": "Bolsena", "water_body": "lago_bolsena", "query": "Bolsena, Viterbo, Italia", "priority": 3 },
+    { "id": "capodimonte", "name": "Capodimonte", "water_body": "lago_bolsena", "query": "Capodimonte, Viterbo, Italia", "priority": 3 }
+  ],
+  "ingestion": {
+    "geocoder": "nominatim",
+    "poi_source": "overpass",
+    "usage_policy": "Public Nominatim: max 1 request/second, identifying User-Agent required, no systematic or bulk querying. This file exceeds what the public endpoints are for — use a Geofabrik extract for full ingestion, or let the backend resolve spots lazily and cache them.",
+    "poi_radius_m": 1500,
+    "poi_categories": ["slipway", "marina", "parking", "restaurant", "bar", "cafe", "fuel", "sailing_club", "shower", "drinking_water"]
+  }
+}

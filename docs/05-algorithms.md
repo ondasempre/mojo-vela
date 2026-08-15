@@ -200,10 +200,21 @@ suitable_i = 0  if  g_i > gust_limit  or  storm_prob_i >= 0.5
 h_i = 0.5 * trapezoid(v_i; band) + 0.3 * (1 - storm_prob_i) + 0.2 * (1 - clamp01(precip_i / 2.0))
 ```
 
-Then: find the contiguous run of at least `D_min` hours, containing no excluded hour, maximising the
-mean of `h_i`; ties broken by the earlier start. With prefix sums this is O(n·k) for all admissible
-lengths and O(n) for a fixed length — small at n = 24, but it is the natural first SIMD exercise
-(Learning Level 6) because it is a sliding reduction over a contiguous float array.
+Then: among all contiguous runs of at least `D_min` hours containing no excluded hour, pick the one
+maximising the mean of `h_i`.
+
+**Tie-break, in order:** (1) highest mean; (2) when two windows are within `WINDOW_EPS = 0.01` of each
+other, the **longer** one; (3) the **earlier** start. Rule (2) exists because maximising a mean alone
+always favours the shortest admissible window — a sailor asking for "at least three hours" wants the
+whole good part of the day, not the best three hours inside it.
+
+With prefix sums this is O(n·k) over all admissible lengths and O(n) for a fixed length — small at
+n = 24, but it is the natural first SIMD exercise (Learning Level 6): a sliding reduction over a
+contiguous float array.
+
+If no admissible window exists (every candidate contains an excluded hour, or the day is shorter than
+`D_min`), the result is **no window**, reported as such. It is never approximated by relaxing the
+exclusion mask — the mask exists precisely because those hours are the ones to stay ashore for.
 
 ## 20. Ranking algorithm
 

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SailWise — dove vado a vela oggi?</title>
+  <meta name="description" content="SailWise — pianificatore intelligente per uscite in barca a vela sui laghi italiani.">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛵</text></svg>">
+</head>
+<body>
+  <a class="skip-link" href="#results">Salta ai risultati</a>
+
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <div class="brand">
+        <span class="burgee" aria-hidden="true"></span>
+        <div>
+          <h1>SailWise</h1>
+          <p class="tagline">Dove conviene andare a veleggiare oggi?</p>
+        </div>
+      </div>
+      <div class="masthead-status">
+        <span id="provider-badge" class="badge badge-quiet">connessione…</span>
+        <button id="theme-toggle" class="ghost-button" type="button" aria-label="Cambia tema">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="demo-banner" class="banner banner-demo" hidden>
+    <strong>Modalità demo — dati sintetici.</strong>
+    I numeri che vedi sono <em>inventati</em> per far funzionare l'interfaccia offline.
+    Non sono una previsione e non dicono nulla sulle condizioni reali.
+    <span class="banner-hint">Avvia con <code>SAILWISE_WEATHER_PROVIDER=open-meteo</code> per dati reali.</span>
+  </div>
+
+  <div id="warmup-banner" class="banner banner-info" hidden>
+    <span class="spinner" aria-hidden="true"></span>
+    <span id="warmup-text">Risoluzione delle coordinate degli spot in corso…</span>
+  </div>
+
+  <main class="wrap">
+    <form id="controls" class="panel controls" aria-label="Parametri dell'uscita">
+      <div class="field">
+        <label for="profile">Tipo di uscita</label>
+        <select id="profile" name="profile">
+          <option value="RELAX">Relax</option>
+          <option value="CRUISING" selected>Crociera</option>
+          <option value="TRAINING">Allenamento</option>
+          <option value="RACING">Regata</option>
+          <option value="FAMILY">Famiglia</option>
+          <option value="SPORT">Sport</option>
+        </select>
+        <p class="hint" id="profile-hint">—</p>
+      </div>
+
+      <div class="field">
+        <label for="day">Giorno</label>
+        <input type="date" id="day" name="day">
+      </div>
+
+      <div class="field">
+        <label for="water-body">Lago</label>
+        <select id="water-body" name="water_body">
+          <option value="">Tutti i laghi</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="origin">Partenza da</label>
+        <select id="origin" name="origin_spot_id">
+          <option value="">Nessun vincolo di distanza</option>
+        </select>
+      </div>
+
+      <div class="field field-narrow">
+        <label for="max-driving">Auto max (km)</label>
+        <input type="number" id="max-driving" name="max_driving_km" min="1" max="2000" step="10" value="100">
+      </div>
+
+      <div class="field field-narrow">
+        <label for="min-duration">Durata min (h)</label>
+        <input type="number" id="min-duration" name="min_duration_h" min="1" max="12" value="3">
+      </div>
+
+      <div class="field field-narrow">
+        <label for="earliest">Dalle</label>
+        <input type="number" id="earliest" name="earliest_hour" min="0" max="23" value="8">
+      </div>
+
+      <div class="field field-narrow">
+        <label for="latest">Alle</label>
+        <input type="number" id="latest" name="latest_hour" min="1" max="23" value="20">
+      </div>
+
+      <div class="field field-check">
+        <label for="needs-ramp">
+          <input type="checkbox" id="needs-ramp" name="needs_ramp">
+          Serve uno scivolo
+        </label>
+      </div>
+
+      <button type="submit" class="primary-button" id="submit">Trova dove veleggiare</button>
+    </form>
+
+    <section id="results" aria-live="polite" aria-busy="false">
+      <div id="loading" class="panel empty" hidden>
+        <span class="spinner" aria-hidden="true"></span> Calcolo in corso…
+      </div>
+      <div id="error" class="panel error" hidden></div>
+      <div id="empty" class="panel empty" hidden></div>
+      <div id="hero"></div>
+      <div id="list"></div>
+      <details id="excluded-box" class="panel excluded" hidden>
+        <summary><span id="excluded-count">0</span> spot esclusi — e perché</summary>
+        <ul id="excluded-list"></ul>
+      </details>
+    </section>
+  </main>
+
+  <footer class="wrap site-footer">
+    <p class="disclaimer" id="disclaimer">
+      SailWise è un supporto alla decisione, non un via libera alla sicurezza.
+      Verifica sempre bollettini ufficiali, avvisi ai naviganti e condizioni locali prima di partire.
+    </p>
+    <p class="sources" id="sources"></p>
+    <p class="colophon">
+      Punteggi calcolati dal motore deterministico SailWise · nessun numero è generato da un modello linguistico.
+    </p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

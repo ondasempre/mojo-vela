@@ -36,8 +36,11 @@ class HourlyWeather:
     precip_mm: float = 0.0
     precip_prob: float = 0.0
     cloud_frac: float = 0.0
-    visibility_m: float = 10_000.0
+    #: None means the provider does not supply visibility for this model (UNKNOWN).
+    #: It is dropped from the weather component rather than defaulted (FR-P-03).
+    visibility_m: float | None = 10_000.0
     storm_prob: float = 0.0
+    pressure_hpa: float | None = None
 
 
 class WindTrend(str):

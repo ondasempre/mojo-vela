@@ -41,6 +41,22 @@ jobs:
         working-directory: python
         run: PYTHONPATH=src python3 -m sailwise_ref.cli --all-profiles
 
+  backend:
+    name: API and adapters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ./python -e './backend[dev]'
+      - name: Lint
+        run: ruff check backend/app backend/tests
+      - name: Tests
+        working-directory: backend
+        run: pytest -q
+
   mojo:
     name: Mojo compute core
     runs-on: ubuntu-latest
