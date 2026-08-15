@@ -1,0 +1,36 @@
+{
+  "$schema": "../schemas/day_forecast.schema.json",
+  "id": "day_dervio_synthetic",
+  "provenance": "SYNTHETIC",
+  "warning": "This file contains INVENTED numbers. It is a test fixture, not a forecast, and it must never be presented as data about a real day at a real place. The wind series reproduces the illustrative table in the project brief (docs, section 4).",
+  "spot_id": "dervio",
+  "spot_name": "Dervio",
+  "date": "2026-08-15",
+  "timezone": "Europe/Rome",
+  "units": {
+    "wind": "kn",
+    "gust": "kn",
+    "wind_dir": "deg_meteorological",
+    "temp": "C",
+    "precip": "mm",
+    "visibility": "m"
+  },
+  "hours": [
+    {"hour":  9, "wind_kn":  5.0, "gust_kn":  7.0, "wind_dir_deg":  20.0, "temp_c": 21.0, "precip_mm": 0.0, "precip_prob": 0.05, "cloud_frac": 0.20, "visibility_m": 20000.0, "storm_prob": 0.00},
+    {"hour": 10, "wind_kn":  7.0, "gust_kn":  9.5, "wind_dir_deg":  25.0, "temp_c": 23.0, "precip_mm": 0.0, "precip_prob": 0.05, "cloud_frac": 0.20, "visibility_m": 20000.0, "storm_prob": 0.00},
+    {"hour": 11, "wind_kn":  9.0, "gust_kn": 12.0, "wind_dir_deg": 180.0, "temp_c": 25.0, "precip_mm": 0.0, "precip_prob": 0.05, "cloud_frac": 0.25, "visibility_m": 20000.0, "storm_prob": 0.00},
+    {"hour": 12, "wind_kn": 12.0, "gust_kn": 15.0, "wind_dir_deg": 190.0, "temp_c": 27.0, "precip_mm": 0.0, "precip_prob": 0.05, "cloud_frac": 0.30, "visibility_m": 20000.0, "storm_prob": 0.05},
+    {"hour": 13, "wind_kn": 14.0, "gust_kn": 17.0, "wind_dir_deg": 195.0, "temp_c": 28.0, "precip_mm": 0.0, "precip_prob": 0.10, "cloud_frac": 0.35, "visibility_m": 18000.0, "storm_prob": 0.05},
+    {"hour": 14, "wind_kn": 15.0, "gust_kn": 17.8, "wind_dir_deg": 195.0, "temp_c": 28.0, "precip_mm": 0.0, "precip_prob": 0.10, "cloud_frac": 0.40, "visibility_m": 18000.0, "storm_prob": 0.10},
+    {"hour": 15, "wind_kn": 13.0, "gust_kn": 16.0, "wind_dir_deg": 200.0, "temp_c": 27.0, "precip_mm": 0.0, "precip_prob": 0.10, "cloud_frac": 0.40, "visibility_m": 18000.0, "storm_prob": 0.10},
+    {"hour": 16, "wind_kn": 10.0, "gust_kn": 13.0, "wind_dir_deg": 200.0, "temp_c": 26.0, "precip_mm": 0.0, "precip_prob": 0.15, "cloud_frac": 0.45, "visibility_m": 15000.0, "storm_prob": 0.15},
+    {"hour": 17, "wind_kn":  7.0, "gust_kn":  9.0, "wind_dir_deg": 205.0, "temp_c": 25.0, "precip_mm": 0.0, "precip_prob": 0.15, "cloud_frac": 0.45, "visibility_m": 15000.0, "storm_prob": 0.15}
+  ],
+  "accessibility": {
+    "launch": null,
+    "parking": null,
+    "drive": null,
+    "services": null,
+    "note": "All UNKNOWN on purpose: no verified facility data has been ingested yet. See data/README.md."
+  }
+}

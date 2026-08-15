@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sailwise.dev/schemas/sailing_spot.schema.json",
+  "title": "SailWise sailing spot dataset",
+  "description": "A curated set of sailing spots for one body of water. Every factual field requires a source and a retrieval date; unknown values are null, never guessed.",
+  "type": "object",
+  "required": ["dataset", "water_body", "spots"],
+  "properties": {
+    "dataset": { "type": "string" },
+    "status": { "enum": ["pending_ingestion", "ingested", "verified"] },
+    "generated_at": { "type": ["string", "null"], "format": "date-time" },
+    "licence": { "type": ["string", "null"] },
+    "attribution": { "type": ["string", "null"] },
+    "water_body": {
+      "type": "object",
+      "required": ["id", "name", "type"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "enum": ["LAKE", "SEA", "LAGOON", "RIVER"] },
+        "country": { "type": "string", "description": "ISO 3166-1 alpha-2" },
+        "region": { "type": "string" }
+      }
+    },
+    "spots": { "type": "array", "items": { "$ref": "#/$defs/spot" } }
+  },
+  "$defs": {
+    "spot": {
+      "type": "object",
+      "required": ["id", "name", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "name": { "type": "string" },
+        "query": { "type": "string", "description": "geocoding query used at ingestion" },
+        "lat": { "type": ["number", "null"], "minimum": -90, "maximum": 90 },
+        "lon": { "type": ["number", "null"], "minimum": -180, "maximum": 180 },
+        "difficulty": { "enum": ["EASY", "MODERATE", "DEMANDING", null] },
+        "exposure_sectors": {
+          "type": ["array", "null"],
+          "description": "fetch-exposed compass sectors in degrees, used by the chop estimate",
+          "items": { "type": "number", "minimum": 0, "maximum": 360 }
+        },
+        "preferred_wind_dir": {
+          "type": ["array", "null"],
+          "items": { "type": "number", "minimum": 0, "maximum": 360 }
+        },
+        "facilities": {
+          "type": ["object", "null"],
+          "description": "Each category is a list of sourced records, or null for UNKNOWN. An empty list means 'searched and found none'; null means 'not searched'. These are different facts.",
+          "additionalProperties": {
+            "type": ["array", "null"],
+            "items": { "$ref": "#/$defs/facility" }
+          }
+        },
+        "source": { "type": ["string", "null"] },
+        "source_ref": { "type": ["string", "null"] },
+        "retrieved_at": { "type": ["string", "null"], "format": "date-time" },
+        "verified_by": { "type": ["string", "null"] },
+        "verified_at": { "type": ["string", "null"], "format": "date" },
+        "status": {
+          "enum": ["pending_ingestion", "ingested_unverified", "verified", "ingestion_failed"]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "verified" } } },
+          "then": { "required": ["lat", "lon", "source", "retrieved_at", "verified_by"] }
+        },
+        {
+          "if": { "properties": { "status": { "const": "ingested_unverified" } } },
+          "then": { "required": ["lat", "lon", "source", "retrieved_at"] }
+        }
+      ]
+    },
+    "facility": {
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "lat": { "type": ["number", "null"] },
+        "lon": { "type": ["number", "null"] },
+        "tags": { "type": "object" },
+        "source": { "type": "string" },
+        "source_ref": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

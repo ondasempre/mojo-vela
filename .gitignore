@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Mojo / pixi
+.pixi/
+*.mojopkg
+mojo/build/
+
+# Environment and secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Data that is fetched, not authored (regenerate with scripts/fetch_spots.py)
+data/spots/*.json
+!data/spots/*.seed.json
+
+# Benchmark output is machine-specific; commit only curated results
+benchmarks/results/*.local.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
