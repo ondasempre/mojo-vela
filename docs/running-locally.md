@@ -1,19 +1,64 @@
 # Running SailWise locally
 
+**macOS / Linux / Git Bash / WSL:**
+
 ```bash
 ./scripts/run_local.sh          # → http://127.0.0.1:8000
 ```
 
-That is the whole thing. It installs the two Python packages on first run, starts the
-API and serves the web UI from the same process.
+**Windows PowerShell:**
 
-| Command | What you get |
-|---|---|
-| `./scripts/run_local.sh` | Real forecasts from Open-Meteo, falling back to demo data if it is unreachable |
-| `./scripts/run_local.sh --demo` | Synthetic data only. Fully offline, nothing leaves your machine |
-| `./scripts/run_local.sh --live` | Open-Meteo only. Failures surface instead of falling back — use this when testing the integration |
-| `./scripts/run_local.sh --reload` | Auto-restart on code changes |
-| `./scripts/run_local.sh --port 9000` | Different port |
+```powershell
+.\scripts\run_local.ps1        # → http://127.0.0.1:8000
+```
+
+Either one installs the two Python packages on first run, starts the API and serves
+the web UI from the same process.
+
+> PowerShell cannot run `.sh` files — that is what
+> `Termine './scripts/run_local.sh' non riconosciuto` means. Use the `.ps1`, or run the
+> `.sh` from Git Bash or WSL.
+
+Both scripts must be run **from inside the repository**, so clone it first:
+
+```powershell
+git clone https://github.com/ondasempre/mojo-vela.git
+cd mojo-vela
+git checkout claude/sailwise-intelligent-planner-9t0qht
+```
+
+| bash | PowerShell | What you get |
+|---|---|---|
+| `./scripts/run_local.sh` | `.\scripts\run_local.ps1` | Real forecasts from Open-Meteo, falling back to demo data if unreachable |
+| `--demo` | `-Demo` | Synthetic data only. Fully offline, nothing leaves your machine |
+| `--live` | `-Live` | Open-Meteo only. Failures surface instead of falling back — use when testing the integration |
+| `--reload` | `-Reload` | Auto-restart on code changes |
+| `--port 9000` | `-Port 9000` | Different port |
+
+### If PowerShell blocks the script
+
+`.ps1` files are unsigned, so a default Windows policy may refuse to run them:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run_local.ps1
+```
+
+or allow local scripts once, for your user only:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+### Without any script at all
+
+Four commands, on any platform — this is exactly what the scripts do:
+
+```powershell
+python -m pip install -e ./python -e ./backend
+cd backend
+$env:SAILWISE_WEATHER_PROVIDER = "auto"     # or "fixture" for offline demo data
+python -m uvicorn app.main:app --port 8000
+```
 
 Prefer a virtualenv:
 
@@ -109,6 +154,17 @@ cd backend && python3 -m pytest      #  26 tests: API, adapters, cache, provenan
 No test touches a live service.
 
 ## Troubleshooting
+
+**`Termine './scripts/run_local.sh' non riconosciuto`** (PowerShell) — two possible
+causes, often both at once. PowerShell cannot execute `.sh` files: use
+`.\scripts\run_local.ps1`. And the command must be run from inside the cloned
+repository: `cd mojo-vela` first. `Get-Location` tells you where you are.
+
+**`run_local.ps1 cannot be loaded because running scripts is disabled`** — see
+"If PowerShell blocks the script" above.
+
+**`python: command not found` on Windows** — Python is not on `PATH`. Reinstall from
+python.org with "Add python.exe to PATH" ticked, or use `py` instead of `python`.
 
 **"Nessuno spot ha ancora coordinate"** — geocoding is disabled or Nominatim is
 unreachable. Run the ingestion script, or set `SAILWISE_GEOCODING=1`.

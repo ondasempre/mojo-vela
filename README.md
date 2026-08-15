@@ -48,6 +48,13 @@ warnings and a web UI. See [docs/10-roadmap.md](docs/10-roadmap.md).
 ./scripts/run_local.sh --demo     # synthetic data, fully offline
 ```
 
+On Windows PowerShell (which cannot run `.sh` files):
+
+```powershell
+.\scripts\run_local.ps1
+.\scripts\run_local.ps1 -Demo
+```
+
 That starts the API and the web UI in one process. No API key needed: the default
 weather provider's free tier requires none. Full guide:
 [docs/running-locally.md](docs/running-locally.md).
