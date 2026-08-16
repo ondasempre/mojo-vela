@@ -119,7 +119,7 @@ async function boot() {
   $("theme-toggle").addEventListener("click", toggleTheme);
   initTabs();
 
-  await Promise.all([loadHealth(), loadSpots(), loadProfiles()]);
+  await Promise.all([loadHealth(), loadSpots(), loadProfiles(), loadImages()]);
   search();
 }
 
@@ -259,6 +259,8 @@ function render(body) {
     renderHero(results.find((r) => r.spot.id === state.selected) || results[0]);
     renderList(results);
     $("detail").hidden = false;
+    const top = results.find((r) => r.spot.id === state.selected) || results[0];
+    loadImages(top.spot.water_body_id || null, top.spot.id);
     loadTab(activeTab);
   }
 
@@ -531,6 +533,7 @@ function toggleTheme() {
   const next = current === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = next;
   localStorage.setItem("sailwise-theme", next);
+  renderHeroBand();
 }
 
 boot();
@@ -589,6 +592,12 @@ async function loadTab(name) {
       detailCache.webcams[spotId] = await fetchJson(`/api/spots/${spotId}/webcams`);
     }
     panel.innerHTML = renderWebcams(detailCache.webcams[spotId]);
+    return;
+  }
+
+  if (name === "photos") {
+    const lake = entry.spot.water_body_id || null;
+    panel.innerHTML = renderPhotos(await loadImages(lake, spotId));
     return;
   }
 
@@ -810,4 +819,89 @@ function monthLabel(iso) {
   const months = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
   const index = parseInt(iso.slice(5, 7), 10) - 1;
   return months[index] || "";
+}
+
+/* ---------------------------------------------------------------------------
+ * Photographs: the hero band and the gallery tab.
+ *
+ * The built-in SVG illustrations are the fallback, so the page always has an
+ * image and never needs a borrowed placeholder. Every photograph renders its
+ * credit — an entry without one is dropped by the backend, not shown uncredited.
+ * ------------------------------------------------------------------------- */
+
+let imagesPayload = null;
+
+function prefersDark() {
+  const explicit = document.documentElement.dataset.theme;
+  if (explicit) return explicit === "dark";
+  return matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+async function loadImages(waterBody, spotId) {
+  const params = new URLSearchParams();
+  if (waterBody) params.set("water_body", waterBody);
+  if (spotId) params.set("spot_id", spotId);
+  const query = params.toString();
+  imagesPayload = await fetchJson(`/api/images${query ? `?${query}` : ""}`);
+  renderHeroBand();
+  return imagesPayload;
+}
+
+function renderHeroBand() {
+  if (!imagesPayload || imagesPayload.error) return;
+  const data = imagesPayload.data;
+  const hero = data.hero;
+  const image = $("hero-image");
+  const credit = $("hero-credit");
+
+  // The built-in illustration comes in two versions; a real photograph does not.
+  image.src = hero.builtin ? (prefersDark() ? data.builtin.dark : data.builtin.light) : hero.url;
+  image.alt = hero.caption || "Barca a vela in navigazione";
+
+  if (hero.builtin) {
+    credit.textContent = "🎨 Illustrazione SailWise — aggiungi le tue foto in data/images/";
+  } else {
+    const bits = [hero.caption, hero.credit, hero.licence].filter(Boolean);
+    credit.innerHTML = hero.source_url
+      ? `📸 <a href="${escapeHtml(hero.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(bits.join(" · "))}</a>`
+      : `📸 ${escapeHtml(bits.join(" · "))}`;
+  }
+}
+
+function renderPhotos(payload) {
+  if (!payload || payload.error) {
+    return `<p class="empty-note">⚠ ${escapeHtml(payload?.error || "errore")}</p>`;
+  }
+  const data = payload.data;
+  const photos = data.gallery.filter((p) => !p.builtin);
+
+  const problems = data.problems && data.problems.length
+    ? `<p class="empty-note">⚠ Voci ignorate nel manifest:<br>${data.problems.map(escapeHtml).join("<br>")}</p>`
+    : "";
+
+  if (!photos.length) {
+    return `${problems}<div class="empty-note">
+      <p>📸 <strong>Nessuna fotografia nel manifest.</strong></p>
+      <p>Le foto hanno un autore, quindi SailWise non ne include di terzi: al loro
+         posto vedi l'illustrazione disegnata per il progetto.</p>
+      <p>Metti le tue in <code>data/images/photos/</code> ed elencale in
+         <code>data/images/images.json</code> — istruzioni in
+         <code>data/images/README.md</code>. Bastano <code>file</code> e
+         <code>credit</code>.</p>
+    </div>`;
+  }
+
+  return `${problems}<div class="photo-grid">${photos
+    .map(
+      (photo) => `<figure class="photo-card">
+        <img src="${escapeHtml(photo.url)}" alt="${escapeHtml(photo.caption || "Barca a vela")}" loading="lazy">
+        <figcaption class="photo-body">
+          ${photo.caption ? `<p class="photo-caption">${escapeHtml(photo.caption)}</p>` : ""}
+          <p class="photo-credit">📸 ${escapeHtml(photo.credit)}${
+            photo.licence ? ` · ${escapeHtml(photo.licence)}` : ""
+          }</p>
+        </figcaption>
+      </figure>`
+    )
+    .join("")}</div>`;
 }

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustrazione: barca a vela in navigazione su un lago fra le montagne">
+  <title>Barca a vela su un lago alpino</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fd3f4"/>
+      <stop offset="55%" stop-color="#c9e9f6"/>
+      <stop offset="100%" stop-color="#eaf6fb"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3f9dc4"/>
+      <stop offset="45%" stop-color="#1f7ba6"/>
+      <stop offset="100%" stop-color="#125b80"/>
+    </linearGradient>
+    <linearGradient id="farHills" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9db8c4"/>
+      <stop offset="100%" stop-color="#7d9dad"/>
+    </linearGradient>
+    <linearGradient id="midHills" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6f9483"/>
+      <stop offset="100%" stop-color="#4d7160"/>
+    </linearGradient>
+    <linearGradient id="nearHills" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#456b57"/>
+      <stop offset="100%" stop-color="#2c4a3c"/>
+    </linearGradient>
+    <linearGradient id="sail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e3edf2"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="500" fill="url(#sky)"/>
+
+  <!-- sun and haze -->
+  <circle cx="1245" cy="118" r="46" fill="#fff6d8" opacity=".95"/>
+  <circle cx="1245" cy="118" r="86" fill="#fff3c9" opacity=".28"/>
+
+  <!-- clouds -->
+  <g fill="#ffffff" opacity=".82">
+    <ellipse cx="300" cy="92" rx="86" ry="26"/>
+    <ellipse cx="360" cy="80" rx="62" ry="30"/>
+    <ellipse cx="248" cy="84" rx="52" ry="22"/>
+    <ellipse cx="960" cy="66" rx="70" ry="21"/>
+    <ellipse cx="1012" cy="58" rx="48" ry="24"/>
+    <ellipse cx="640" cy="128" rx="56" ry="17"/>
+  </g>
+
+  <!-- far ridge -->
+  <path fill="url(#farHills)" d="M0 300 L120 214 L210 258 L322 168 L408 236 L520 154 L618 232 L724 186 L830 250 L946 190 L1064 246 L1178 176 L1290 240 L1402 198 L1512 252 L1600 214 L1600 330 L0 330 Z"/>
+  <!-- snow caps -->
+  <g fill="#ffffff" opacity=".55">
+    <path d="M322 168 L296 194 L312 190 L326 200 L340 188 L356 196 Z"/>
+    <path d="M520 154 L494 182 L512 178 L526 188 L542 176 L558 186 Z"/>
+    <path d="M1178 176 L1154 202 L1170 198 L1184 208 L1198 196 L1214 204 Z"/>
+  </g>
+
+  <!-- mid ridge -->
+  <path fill="url(#midHills)" d="M0 330 L96 268 L214 320 L318 250 L436 314 L556 262 L664 322 L790 268 L906 324 L1024 272 L1142 326 L1268 274 L1388 324 L1502 282 L1600 322 L1600 366 L0 366 Z"/>
+
+  <!-- near shore -->
+  <path fill="url(#nearHills)" d="M0 366 L140 330 L268 362 L392 326 L520 360 L648 332 L792 364 L930 334 L1074 362 L1210 336 L1346 362 L1478 340 L1600 360 L1600 384 L0 384 Z"/>
+
+  <!-- lakeside village -->
+  <g opacity=".85">
+    <rect x="1290" y="352" width="16" height="22" fill="#f0e2cf"/>
+    <rect x="1312" y="346" width="20" height="28" fill="#e8d3b8"/>
+    <rect x="1338" y="356" width="14" height="18" fill="#f2e6d4"/>
+    <path d="M1288 352 L1298 342 L1308 352 Z" fill="#a8613f"/>
+    <path d="M1310 346 L1322 334 L1334 346 Z" fill="#a8613f"/>
+    <path d="M1336 356 L1345 347 L1354 356 Z" fill="#a8613f"/>
+    <rect x="1268" y="330" width="12" height="44" fill="#ded0bb"/>
+    <path d="M1266 330 L1274 318 L1282 330 Z" fill="#8f5236"/>
+  </g>
+
+  <rect y="384" width="1600" height="116" fill="url(#water)"/>
+
+  <!-- sun glitter -->
+  <g fill="#ffffff" opacity=".35">
+    <ellipse cx="1245" cy="404" rx="120" ry="4"/>
+    <ellipse cx="1245" cy="420" rx="90" ry="3"/>
+    <ellipse cx="1245" cy="436" rx="130" ry="3.5"/>
+    <ellipse cx="1245" cy="456" rx="70" ry="3"/>
+  </g>
+
+  <!-- ripples -->
+  <g stroke="#ffffff" stroke-opacity=".22" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M60 410 q26 -7 52 0 t52 0"/>
+    <path d="M320 430 q26 -7 52 0 t52 0"/>
+    <path d="M180 462 q30 -8 60 0 t60 0"/>
+    <path d="M620 416 q26 -7 52 0 t52 0"/>
+    <path d="M880 448 q30 -8 60 0 t60 0"/>
+    <path d="M1420 470 q26 -7 52 0 t52 0"/>
+  </g>
+
+  <!-- distant sailboat -->
+  <g opacity=".55">
+    <path d="M1090 356 L1090 398 L1058 398 Z" fill="#ffffff"/>
+    <path d="M1096 366 L1096 398 L1120 398 Z" fill="#f1f7fa"/>
+    <path d="M1044 398 L1132 398 L1120 410 L1056 410 Z" fill="#eef4f7"/>
+  </g>
+
+  <!-- main sailboat, heeling to starboard -->
+  <g transform="translate(520 300) rotate(-7)">
+    <!-- mast -->
+    <rect x="0" y="0" width="4" height="150" fill="#cfd9de"/>
+    <!-- mainsail -->
+    <path d="M4 4 C 60 52, 82 106, 88 150 L4 150 Z" fill="url(#sail)" stroke="#c6d5dd" stroke-width="1.5"/>
+    <!-- sail number, the way a real one is stencilled -->
+    <text x="34" y="112" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#1c6ea4" opacity=".75" transform="rotate(4 34 112)">ITA</text>
+    <!-- jib -->
+    <path d="M0 14 C -34 62, -50 112, -54 150 L0 150 Z" fill="url(#sail)" stroke="#c6d5dd" stroke-width="1.5"/>
+    <!-- boom -->
+    <rect x="0" y="146" width="90" height="4" rx="2" fill="#b9c7cf"/>
+  </g>
+
+  <!-- hull -->
+  <g transform="translate(496 446)">
+    <path d="M-70 0 C -46 20, 60 22, 104 2 C 96 -12, -52 -14, -70 0 Z" fill="#f7fafb" stroke="#c8d6dd" stroke-width="1.5"/>
+    <path d="M-58 2 C -34 14, 52 16, 92 3 L 92 6 C 52 20, -34 18, -58 6 Z" fill="#1c6ea4" opacity=".55"/>
+    <!-- crew on the rail -->
+    <circle cx="10" cy="-8" r="5" fill="#28516b"/>
+    <circle cx="26" cy="-9" r="5" fill="#28516b"/>
+    <circle cx="42" cy="-8" r="5" fill="#28516b"/>
+  </g>
+
+  <!-- wake -->
+  <g stroke="#ffffff" stroke-opacity=".5" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M600 452 q40 8 96 4"/>
+    <path d="M596 462 q52 12 122 6"/>
+  </g>
+</svg>

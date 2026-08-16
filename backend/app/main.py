@@ -30,6 +30,7 @@ from .adapters.weather_fixture import FixtureWeatherProvider
 from .adapters.weather_open_meteo import OpenMeteoProvider
 from .adapters.webcams import CuratedWebcamProvider, WindyWebcamProvider
 from .config import get_settings
+from .services.images import ImageService
 from .services.places import PlacesService, category_metadata
 from .services.planning import PlanningService
 from .services.spots import SpotService
@@ -98,6 +99,7 @@ class Container:
             radius_m=self.settings.poi_radius_m,
         )
         self.planning.attach_places(self.places if self.settings.poi_enabled else None)
+        self.images = ImageService(self.settings.data_dir)
 
     async def aclose(self) -> None:
         await self.client.aclose()
@@ -350,6 +352,28 @@ async def events(water_body: str | None = None) -> dict:
     return {"data": result.as_dict(), "meta": {"water_body": water_body}}
 
 
+@app.get("/api/images")
+async def images(water_body: str | None = None, spot_id: str | None = None) -> dict:
+    """Photographs for the hero band and the spot gallery.
+
+    Falls back to the built-in SVG illustrations, so there is always something to
+    show and never a need for a borrowed placeholder.
+    """
+    c = deps()
+    return {
+        "data": c.images.as_dict(water_body=water_body, spot_id=spot_id),
+        "meta": {
+            "note": (
+                "Nessuna fotografia nel manifest: mostro l'illustrazione inclusa. "
+                "Aggiungi le tue in data/images/photos/ ed elencale in "
+                "data/images/images.json — vedi data/images/README.md."
+            )
+            if not c.images.gallery(water_body, spot_id)
+            else None
+        },
+    }
+
+
 @app.get("/api/categories")
 async def categories() -> dict:
     """Emoji and labels for POI categories, so the UI keeps no second copy."""
@@ -370,6 +394,26 @@ if STATIC_DIR.exists():
     @app.get("/", include_in_schema=False)
     async def index() -> FileResponse:
         return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/photos/{filename:path}", include_in_schema=False)
+async def photo(filename: str) -> FileResponse:
+    """Serve a user photograph from the data directory.
+
+    A route rather than a StaticFiles mount for two reasons: the directory may not
+    exist yet at import time (and may change with SAILWISE_DATA_DIR), and the path
+    is resolved and checked against its base on every request, so a crafted filename
+    cannot climb out of the photos directory.
+    """
+    base = (deps().settings.data_dir / "images" / "photos").resolve()
+    candidate = (base / filename).resolve()
+    try:
+        candidate.relative_to(base)
+    except ValueError:
+        raise HTTPException(404, "not found") from None
+    if not candidate.is_file():
+        raise HTTPException(404, "not found")
+    return FileResponse(candidate)
 
 
 def main() -> None:  # pragma: no cover - entry point

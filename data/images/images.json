@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/images.schema.json",
+  "dataset": "images",
+  "warning": "This file ships EMPTY on purpose. Photographs have authors: SailWise does not bundle images it does not have the right to distribute. Drop your own photos into data/images/photos/ and list them here — see data/images/README.md. Until then the app shows the built-in SVG illustrations, which were drawn for this project.",
+  "photos": [],
+  "example": {
+    "id": "dervio-breva",
+    "file": "dervio-breva.jpg",
+    "caption": "Breva al pomeriggio, vista da Dervio",
+    "credit": "Flavio Macciocchi",
+    "licence": "© tutti i diritti riservati / oppure CC BY 4.0",
+    "source_url": null,
+    "water_body": "lago_di_como",
+    "spot_id": "dervio"
+  }
+}

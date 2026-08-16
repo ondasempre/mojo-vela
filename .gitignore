@@ -29,6 +29,11 @@ mojo/build/
 data/spots/*.json
 !data/spots/*.seed.json
 
+# Your own photographs stay yours: they are not committed by accident.
+# Remove this if you deliberately want to publish them with the project.
+data/images/photos/*
+!data/images/photos/.gitkeep
+
 # Benchmark output is machine-specific; commit only curated results
 benchmarks/results/*.local.json
 

@@ -27,6 +27,11 @@
     </div>
   </header>
 
+  <figure id="hero-band" class="hero-band">
+    <img id="hero-image" src="/static/img/hero-light.svg" alt="Barca a vela in navigazione">
+    <figcaption id="hero-credit" class="hero-credit"></figcaption>
+  </figure>
+
   <div id="demo-banner" class="banner banner-demo" hidden>
     <strong>Modalità demo — dati sintetici.</strong>
     I numeri che vedi sono <em>inventati</em> per far funzionare l'interfaccia offline.
@@ -117,11 +122,13 @@
           <button type="button" class="tab" role="tab" data-tab="webcams" aria-selected="false">📷 Webcam</button>
           <button type="button" class="tab" role="tab" data-tab="events" aria-selected="false">🏁 Eventi</button>
           <button type="button" class="tab" role="tab" data-tab="clubs" aria-selected="false">🏛️ Circoli e mappe</button>
+          <button type="button" class="tab" role="tab" data-tab="photos" aria-selected="false">📸 Foto</button>
         </div>
         <div id="tab-services" class="tab-panel" role="tabpanel"></div>
         <div id="tab-webcams" class="tab-panel" role="tabpanel" hidden></div>
         <div id="tab-events" class="tab-panel" role="tabpanel" hidden></div>
         <div id="tab-clubs" class="tab-panel" role="tabpanel" hidden></div>
+        <div id="tab-photos" class="tab-panel" role="tabpanel" hidden></div>
       </section>
 
       <div id="list"></div>

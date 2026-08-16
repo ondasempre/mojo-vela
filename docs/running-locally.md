@@ -127,6 +127,7 @@ Interactive docs at `http://127.0.0.1:8000/docs` once the server is up.
 | `GET /api/spots/{id}/places` | 🅿️ parking (car and motorcycle), 🍝 food, 🧺 picnic, 🏛️ clubs, services |
 | `GET /api/spots/{id}/webcams` | 📷 webcams near the spot |
 | `GET /api/events?water_body=` | 🏁 regattas, courses and club events |
+| `GET /api/images?water_body=&spot_id=` | 📸 photographs for the hero band and gallery |
 | `GET /api/categories` | emoji and labels for POI categories |
 | `POST /api/cache/invalidate` | drop cached forecasts |
 
@@ -140,9 +141,9 @@ Every response carries a `meta` block with the sources, their provenance, cache 
 and age, and the safety disclaimer. `meta.demo_mode` is `true` whenever any figure in
 the response is synthetic.
 
-## The four detail tabs
+## The five detail tabs
 
-Selecting a spot opens four tabs under the plan:
+Selecting a spot opens five tabs under the plan:
 
 **🅿️ Servizi a terra** — car parking *and* motorcycle parking scored separately, with
 distance, fee and capacity; restaurants, osterie, bars, gelaterie; picnic areas and
@@ -161,6 +162,13 @@ feed — [data/events/README.md](../data/events/README.md).
 
 **🏛️ Circoli e mappe** — sailing clubs, launch points, and one-click links to Google
 Maps, driving directions, OpenStreetMap and the Windy wind map for that position.
+
+**📸 Foto** — photographs of boats sailing, plus the banner at the top of the page.
+Ships with two SVG illustrations drawn for this project; drop your own photos into
+`data/images/photos/` and list them in `data/images/images.json` and they take over.
+A photograph without a `credit` is not shown — see
+[data/images/README.md](../data/images/README.md). Your photos are git-ignored by
+default, so they stay yours.
 
 POIs are fetched **only for the spot you open**, never for all 30 candidates: Overpass
 is donated infrastructure and one query per candidate would be slow and rude. So the
@@ -181,7 +189,7 @@ accessibility component starts UNKNOWN and fills in as you explore.
 
 ```bash
 cd python  && python3 -m pytest      # 115 tests: engine, scoring, window, safety, ranking
-cd backend && python3 -m pytest      #  50 tests: API, adapters, POI, webcams, events
+cd backend && python3 -m pytest      #  65 tests: API, adapters, POI, webcams, events, images
 ./scripts/verify_env.sh              # everything, including the Mojo core if installed
 ```
 

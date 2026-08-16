@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustrazione: barca a vela in navigazione su un lago al tramonto">
+  <title>Barca a vela su un lago alpino, al tramonto</title>
+  <defs>
+    <linearGradient id="skyD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1c2b"/>
+      <stop offset="45%" stop-color="#1c3f56"/>
+      <stop offset="78%" stop-color="#3f6b7d"/>
+      <stop offset="100%" stop-color="#7a8f8a"/>
+    </linearGradient>
+    <linearGradient id="waterD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1b4a63"/>
+      <stop offset="50%" stop-color="#123a50"/>
+      <stop offset="100%" stop-color="#0a2333"/>
+    </linearGradient>
+    <linearGradient id="farD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d5b6d"/>
+      <stop offset="100%" stop-color="#2b4354"/>
+    </linearGradient>
+    <linearGradient id="midD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#25404c"/>
+      <stop offset="100%" stop-color="#162c37"/>
+    </linearGradient>
+    <linearGradient id="nearD" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#132530"/>
+      <stop offset="100%" stop-color="#0b1720"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="500" fill="url(#skyD)"/>
+
+  <!-- low sun -->
+  <circle cx="1245" cy="330" r="38" fill="#ffcf8a" opacity=".95"/>
+  <circle cx="1245" cy="330" r="90" fill="#ffb765" opacity=".22"/>
+  <circle cx="1245" cy="330" r="150" fill="#ff9f52" opacity=".10"/>
+
+  <!-- stars -->
+  <g fill="#ffffff" opacity=".55">
+    <circle cx="160" cy="52" r="1.6"/><circle cx="300" cy="96" r="1.2"/>
+    <circle cx="470" cy="42" r="1.5"/><circle cx="640" cy="80" r="1.1"/>
+    <circle cx="820" cy="48" r="1.4"/><circle cx="1010" cy="90" r="1.2"/>
+    <circle cx="1380" cy="60" r="1.5"/><circle cx="1520" cy="108" r="1.1"/>
+  </g>
+
+  <!-- thin cloud bands catching the last light -->
+  <g fill="#e8a06a" opacity=".16">
+    <ellipse cx="330" cy="152" rx="150" ry="5"/>
+    <ellipse cx="380" cy="166" rx="90" ry="3.5"/>
+    <ellipse cx="1000" cy="130" rx="190" ry="5"/>
+    <ellipse cx="1080" cy="146" rx="110" ry="3.5"/>
+  </g>
+
+  <path fill="url(#farD)" d="M0 300 L120 214 L210 258 L322 168 L408 236 L520 154 L618 232 L724 186 L830 250 L946 190 L1064 246 L1178 176 L1290 240 L1402 198 L1512 252 L1600 214 L1600 330 L0 330 Z"/>
+  <g fill="#c9d8e0" opacity=".28">
+    <path d="M322 168 L296 194 L312 190 L326 200 L340 188 L356 196 Z"/>
+    <path d="M520 154 L494 182 L512 178 L526 188 L542 176 L558 186 Z"/>
+    <path d="M1178 176 L1154 202 L1170 198 L1184 208 L1198 196 L1214 204 Z"/>
+  </g>
+
+  <path fill="url(#midD)" d="M0 330 L96 268 L214 320 L318 250 L436 314 L556 262 L664 322 L790 268 L906 324 L1024 272 L1142 326 L1268 274 L1388 324 L1502 282 L1600 322 L1600 366 L0 366 Z"/>
+  <path fill="url(#nearD)" d="M0 366 L140 330 L268 362 L392 326 L520 360 L648 332 L792 364 L930 334 L1074 362 L1210 336 L1346 362 L1478 340 L1600 360 L1600 384 L0 384 Z"/>
+
+  <!-- village lights -->
+  <g fill="#ffd89b" opacity=".9">
+    <rect x="1294" y="358" width="3" height="4"/><rect x="1302" y="356" width="3" height="4"/>
+    <rect x="1318" y="352" width="3" height="4"/><rect x="1326" y="358" width="3" height="4"/>
+    <rect x="1342" y="360" width="3" height="4"/><rect x="1272" y="340" width="3" height="4"/>
+    <rect x="228" y="356" width="3" height="4"/><rect x="244" y="352" width="3" height="4"/>
+  </g>
+
+  <rect y="384" width="1600" height="116" fill="url(#waterD)"/>
+
+  <!-- sun path on the water -->
+  <g fill="#ffbf78" opacity=".30">
+    <ellipse cx="1245" cy="398" rx="70" ry="4"/>
+    <ellipse cx="1245" cy="414" rx="110" ry="4"/>
+    <ellipse cx="1245" cy="432" rx="84" ry="3.5"/>
+    <ellipse cx="1245" cy="454" rx="130" ry="4"/>
+    <ellipse cx="1245" cy="478" rx="96" ry="3.5"/>
+  </g>
+
+  <g stroke="#8fd3f4" stroke-opacity=".18" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M60 410 q26 -7 52 0 t52 0"/>
+    <path d="M320 430 q26 -7 52 0 t52 0"/>
+    <path d="M180 462 q30 -8 60 0 t60 0"/>
+    <path d="M620 416 q26 -7 52 0 t52 0"/>
+    <path d="M880 448 q30 -8 60 0 t60 0"/>
+  </g>
+
+  <g opacity=".4">
+    <path d="M1090 356 L1090 398 L1058 398 Z" fill="#dfe9ef"/>
+    <path d="M1096 366 L1096 398 L1120 398 Z" fill="#cfdde5"/>
+    <path d="M1044 398 L1132 398 L1120 410 L1056 410 Z" fill="#c6d5dd"/>
+  </g>
+
+  <g transform="translate(520 300) rotate(-7)">
+    <rect x="0" y="0" width="4" height="150" fill="#7f939f"/>
+    <path d="M4 4 C 60 52, 82 106, 88 150 L4 150 Z" fill="#e9dcc6" stroke="#b9a888" stroke-width="1.5"/>
+    <text x="34" y="112" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#1c4a63" opacity=".6" transform="rotate(4 34 112)">ITA</text>
+    <path d="M0 14 C -34 62, -50 112, -54 150 L0 150 Z" fill="#e4d6bf" stroke="#b9a888" stroke-width="1.5"/>
+    <rect x="0" y="146" width="90" height="4" rx="2" fill="#6f838f"/>
+  </g>
+
+  <g transform="translate(496 446)">
+    <path d="M-70 0 C -46 20, 60 22, 104 2 C 96 -12, -52 -14, -70 0 Z" fill="#dfe8ee" stroke="#8ea3ad" stroke-width="1.5"/>
+    <path d="M-58 2 C -34 14, 52 16, 92 3 L 92 6 C 52 20, -34 18, -58 6 Z" fill="#0a2333" opacity=".55"/>
+    <circle cx="10" cy="-8" r="5" fill="#0f2a3a"/>
+    <circle cx="26" cy="-9" r="5" fill="#0f2a3a"/>
+    <circle cx="42" cy="-8" r="5" fill="#0f2a3a"/>
+  </g>
+
+  <g stroke="#bfe4f5" stroke-opacity=".35" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M600 452 q40 8 96 4"/>
+    <path d="M596 462 q52 12 122 6"/>
+  </g>
+</svg>
