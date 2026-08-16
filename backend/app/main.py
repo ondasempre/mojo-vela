@@ -10,13 +10,14 @@ The composition root lives here: it is the only place that names concrete adapte
 from __future__ import annotations
 
 import asyncio
+import hashlib
 from contextlib import asynccontextmanager
 from datetime import date, datetime
 from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from sailwise_ref.profiles import PROFILES, ProfileId, get_profile
@@ -37,6 +38,21 @@ from .services.planning import PlanningService
 from .services.spots import SpotService
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+
+
+def _asset_hash(name: str) -> str:
+    path = STATIC_DIR / name
+    if not path.is_file():
+        return "0"
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:10]
+
+
+def _index_html() -> str:
+    """index.html with ?v=<content hash> appended to the CSS and JS URLs."""
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    for name in ("styles.css", "app.js"):
+        html = html.replace(f"/static/{name}", f"/static/{name}?v={_asset_hash(name)}")
+    return html
 
 
 class Container:
@@ -415,8 +431,14 @@ if STATIC_DIR.exists():
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
     @app.get("/", include_in_schema=False)
-    async def index() -> FileResponse:
-        return FileResponse(STATIC_DIR / "index.html")
+    async def index() -> HTMLResponse:
+        """Serve the page with content-hashed asset URLs.
+
+        Without this a browser happily keeps a cached styles.css after an upgrade,
+        which produces the worst kind of bug report: new markup styled by old CSS,
+        so the layout is broken in a way that does not reproduce anywhere else.
+        """
+        return HTMLResponse(_index_html())
 
 
 @app.get("/photos/{filename:path}", include_in_schema=False)

@@ -55,47 +55,43 @@
   <main class="wrap">
     <section id="view-guide" class="guide" hidden aria-live="polite"></section>
     <div id="view-plan">
-    <form id="controls" class="panel controls" aria-label="Parametri dell'uscita">
-      <div class="control-row control-row-main">
+    <form id="controls" class="controls" aria-label="Parametri dell'uscita">
+      <div class="selector">
+        <p class="selector-label">Seleziona il lago</p>
+        <select id="water-body" name="water_body" class="selector-select" aria-label="Lago">
+          <option value="">Tutti i laghi</option>
+        </select>
+        <div id="lake-chips" class="chips" role="group" aria-label="Scelta rapida del lago"></div>
+      </div>
+
+      <div class="control-grid">
         <div class="field">
-          <label for="profile">⛵ Tipo di uscita</label>
+          <label for="profile">Tipo di uscita</label>
           <select id="profile" name="profile">
-            <option value="RELAX">Relax</option>
-            <option value="CRUISING" selected>Crociera</option>
-            <option value="TRAINING">Allenamento</option>
-            <option value="RACING">Regata</option>
-            <option value="FAMILY">Famiglia</option>
-            <option value="SPORT">Sport</option>
+            <option value="RELAX">⛵ Relax</option>
+            <option value="CRUISING" selected>⛵ Crociera</option>
+            <option value="TRAINING">🎯 Allenamento</option>
+            <option value="RACING">🏁 Regata</option>
+            <option value="FAMILY">👨‍👩‍👧 Famiglia</option>
+            <option value="SPORT">💨 Sport</option>
           </select>
-          <p class="hint" id="profile-hint">&nbsp;</p>
+          <p class="hint" id="profile-hint"></p>
         </div>
 
         <div class="field">
-          <label for="day">📅 Giorno</label>
+          <label for="day">Giorno</label>
           <input type="date" id="day" name="day">
-          <p class="hint">&nbsp;</p>
         </div>
 
         <div class="field">
-          <label for="water-body">🏞️ Lago</label>
-          <select id="water-body" name="water_body">
-            <option value="">Tutti i laghi</option>
-          </select>
-          <p class="hint">&nbsp;</p>
-        </div>
-
-        <div class="field">
-          <label for="origin">📍 Partenza da</label>
+          <label for="origin">Partenza da</label>
           <select id="origin" name="origin_spot_id">
             <option value="">Nessun vincolo di distanza</option>
           </select>
-          <p class="hint">&nbsp;</p>
         </div>
-      </div>
 
-      <div class="control-row control-row-secondary">
         <div class="field">
-          <label for="max-driving">🚗 Auto max</label>
+          <label for="max-driving">Auto max</label>
           <div class="input-suffix">
             <input type="number" id="max-driving" name="max_driving_km" min="1" max="2000" step="10" value="100">
             <span class="suffix">km</span>
@@ -103,7 +99,7 @@
         </div>
 
         <div class="field">
-          <label for="min-duration">⏱️ Durata min</label>
+          <label for="min-duration">Durata minima</label>
           <div class="input-suffix">
             <input type="number" id="min-duration" name="min_duration_h" min="1" max="12" value="3">
             <span class="suffix">ore</span>
@@ -111,30 +107,28 @@
         </div>
 
         <div class="field">
-          <label for="earliest">🌅 Dalle</label>
-          <div class="input-suffix">
-            <input type="number" id="earliest" name="earliest_hour" min="0" max="23" value="8">
-            <span class="suffix">:00</span>
+          <label for="earliest">Fascia oraria</label>
+          <div class="range-pair">
+            <div class="input-suffix">
+              <input type="number" id="earliest" name="earliest_hour" min="0" max="23" value="8" aria-label="Dalle ore">
+              <span class="suffix">:00</span>
+            </div>
+            <span class="range-sep" aria-hidden="true">→</span>
+            <div class="input-suffix">
+              <input type="number" id="latest" name="latest_hour" min="1" max="23" value="20" aria-label="Alle ore">
+              <span class="suffix">:00</span>
+            </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="latest">🌇 Alle</label>
-          <div class="input-suffix">
-            <input type="number" id="latest" name="latest_hour" min="1" max="23" value="20">
-            <span class="suffix">:00</span>
-          </div>
-        </div>
-
-        <div class="field field-check">
-          <label class="checkbox" for="needs-ramp">
-            <input type="checkbox" id="needs-ramp" name="needs_ramp">
-            <span>🛥️ Serve uno scivolo</span>
-          </label>
         </div>
       </div>
 
-      <button type="submit" class="primary-button" id="submit">🧭 Trova dove veleggiare</button>
+      <div class="control-footer">
+        <label class="checkbox" for="needs-ramp">
+          <input type="checkbox" id="needs-ramp" name="needs_ramp">
+          <span>🛥️ Serve uno scivolo per varare</span>
+        </label>
+        <button type="submit" class="primary-button" id="submit">🧭 Trova dove veleggiare</button>
+      </div>
     </form>
 
     <section id="results" aria-live="polite" aria-busy="false">

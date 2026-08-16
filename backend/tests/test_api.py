@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+
 
 def test_health(client):
     body = client.get("/api/health").json()
@@ -146,3 +148,17 @@ def test_ui_is_served(client):
     response = client.get("/")
     assert response.status_code == 200
     assert "SailWise" in response.text
+
+
+def test_static_assets_are_served_with_a_content_hash(client):
+    """A stylesheet edit must reach the browser.
+
+    Without this the browser keeps the old CSS and styles the new markup with it,
+    which is how the form ended up with its unit labels dangling below the inputs
+    long after the CSS had been fixed.
+    """
+    html = client.get("/").text
+    urls = re.findall(r'/static/(styles\.css|app\.js)\?v=([0-9a-f]{10})', html)
+    assert {name for name, _ in urls} == {"styles.css", "app.js"}
+    for name, digest in urls:
+        assert client.get(f"/static/{name}?v={digest}").status_code == 200

@@ -116,6 +116,10 @@ async function boot() {
     search();
   });
   $("profile").addEventListener("change", updateProfileHint);
+  $("water-body").addEventListener("change", () => {
+    syncLakeChips();
+    search();
+  });
   $("theme-toggle").addEventListener("click", toggleTheme);
   initTabs();
   initNav();
@@ -166,7 +170,64 @@ async function loadSpots() {
     for (const spot of body.data.spots) {
       origin.add(new Option(`${spot.name}${spot.lat === null ? " (non risolto)" : ""}`, spot.id));
     }
+    renderLakeChips(body.data.water_bodies, body.data.spots);
   } catch { /* the search call will surface the failure */ }
+}
+
+/** "Lago di Como" → "Como". The chips are a quick pick, not a legend. */
+function shortLakeName(name) {
+  return name.replace(/^lago\s+(di\s+|d['’]\s*)?/i, "").trim() || name;
+}
+
+/**
+ * The chips and the <select> are two faces of the same value. The select stays
+ * because it is the accessible, keyboard-native control and the only one that
+ * scales past a screenful of lakes; the chips are there because picking a lake is
+ * the first thing anyone does and it should take one tap.
+ */
+function renderLakeChips(waterBodies, spots) {
+  const box = $("lake-chips");
+  if (!box) return;
+  const counts = {};
+  for (const spot of spots) {
+    if (spot.water_body) counts[spot.water_body] = (counts[spot.water_body] || 0) + 1;
+  }
+
+  const entries = [{ id: "", label: "Tutti", count: spots.length }];
+  for (const wb of waterBodies) {
+    entries.push({ id: wb.id, label: shortLakeName(wb.name), count: counts[wb.id] || 0 });
+  }
+
+  box.textContent = "";
+  for (const entry of entries) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.dataset.value = entry.id;
+    chip.append(entry.label);
+    if (entry.count) {
+      const badge = document.createElement("span");
+      badge.className = "chip-count";
+      badge.textContent = entry.count;
+      // The count is decoration next to a name that already says it all.
+      badge.setAttribute("aria-hidden", "true");
+      chip.append(badge);
+    }
+    chip.addEventListener("click", () => {
+      $("water-body").value = entry.id;
+      syncLakeChips();
+      search();
+    });
+    box.append(chip);
+  }
+  syncLakeChips();
+}
+
+function syncLakeChips() {
+  const current = $("water-body").value;
+  for (const chip of document.querySelectorAll("#lake-chips .chip")) {
+    chip.setAttribute("aria-pressed", String(chip.dataset.value === current));
+  }
 }
 
 async function loadProfiles() {
@@ -181,8 +242,10 @@ function updateProfileHint() {
   const profile = (window.__profiles || {})[$("profile").value];
   if (!profile) return;
   const [, ideal_lo, ideal_hi] = profile.wind_band_kn;
+  // Non-breaking spaces before the unit: if the hint wraps in a narrow column it
+  // must break between the two facts, never between a number and its unit.
   $("profile-hint").textContent =
-    `ideale ${ideal_lo}–${ideal_hi} kn · raffica max ${profile.gust_limit_kn} kn`;
+    `ideale ${ideal_lo}–${ideal_hi} kn · raffiche ≤${profile.gust_limit_kn} kn`;
 }
 
 // --- search ----------------------------------------------------------------

@@ -202,6 +202,10 @@ not a regulation.
 
 ## Reading the UI
 
+- **The lake selector** is the first control: a dropdown plus one chip per lake with
+  the number of spots in it. Chips and dropdown are the same value — pick either, and
+  the search re-runs immediately.
+
 - **Sailing score 0–100** with the component breakdown underneath — that is *why* the
   number is what it is.
 - **"sconosciuto"** on a component means the data was never sourced. It is excluded
@@ -215,7 +219,7 @@ not a regulation.
 
 ```bash
 cd python  && python3 -m pytest      # 115 tests: engine, scoring, window, safety, ranking
-cd backend && python3 -m pytest      #  83 tests: API, adapters, POI, webcams, events, images, guides
+cd backend && python3 -m pytest      #  84 tests: API, adapters, POI, webcams, events, images, guides
 ./scripts/verify_env.sh              # everything, including the Mojo core if installed
 ```
 

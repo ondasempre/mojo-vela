@@ -32,6 +32,8 @@
   --radius: 12px;
   --shadow: 0 1px 2px rgb(16 34 47 / .08), 0 8px 24px rgb(16 34 47 / .06);
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --gold: #d9a441;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -103,7 +105,8 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 14px; }
 .brand h1 {
-  margin: 0; font-size: 1.7rem; letter-spacing: .01em; font-weight: 700;
+  margin: 0; font-size: 1.85rem; letter-spacing: .01em; font-weight: 700;
+  font-family: var(--serif);
 }
 .tagline { margin: 2px 0 0; color: rgb(255 255 255 / .8); font-size: .93rem; }
 
@@ -159,70 +162,130 @@ body {
 }
 
 /* --- controls -----------------------------------------------------------
-   Alignment rule: every field is a flex column with the label first and the
-   control second, and the rows are separate grids. Labels therefore always sit
-   on the same line and controls always start at the same y, whatever a cell
-   contains below them. The previous version used `align-items: end` on one big
-   grid, which lined the cells up by their *bottoms* — so a field with a hint
-   under it pushed its neighbours out of line. */
+   Styled after the chart-table look of veleitaliane.it: a deep teal panel with
+   gold small-caps labels and cream inputs, in both themes. The panel is
+   deliberately dark on a light page — it reads as the instrument console of the
+   app, and it keeps the lake selector unmistakably the first thing you touch.
 
-.controls { padding: 18px; margin: 22px 0; display: grid; gap: 16px; }
+   Alignment rule: each field is a flex column, label first and control second,
+   so labels share a line and controls share a line whatever sits underneath. An
+   earlier version aligned a single grid by its *bottoms*, which let the field
+   carrying a hint push its neighbours out of line. */
 
-.control-row { display: grid; gap: 14px; align-items: start; }
-.control-row-main { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-.control-row-secondary {
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  padding-top: 14px; border-top: 1px solid var(--border);
+.controls {
+  background: linear-gradient(165deg, #0b2b38, #0f3b4c 55%, #12485c);
+  border: 1px solid rgb(217 164 65 / .28);
+  border-radius: 14px;
+  padding: 26px clamp(16px, 3vw, 30px) 22px;
+  margin: 20px 0 24px;
+  display: grid; gap: 22px;
+  box-shadow: 0 10px 30px rgb(6 20 28 / .18);
+  color: #eaf2f6;
 }
 
-.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* the lake selector, the hero control */
+.selector { text-align: center; display: grid; gap: 12px; justify-items: center; }
+.selector-label {
+  margin: 0; font-size: .75rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--gold);
+}
+.selector-select {
+  width: min(100%, 460px); height: 54px !important;
+  font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem !important;
+  text-align: center; text-align-last: center;
+  background: #f7f3e8 !important; color: #10222f !important;
+  border: 1px solid rgb(217 164 65 / .5) !important;
+}
 
-label {
-  font-size: .8rem; font-weight: 600; color: var(--text-soft); letter-spacing: .02em;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.chip {
+  font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+  padding: 7px 15px; border-radius: 999px;
+  border: 1px solid rgb(234 242 246 / .22); background: rgb(255 255 255 / .05);
+  color: #cfe0e8;
+}
+.chip:hover { border-color: var(--gold); color: #fff; }
+.chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: #17232a; }
+.chip-count {
+  margin-left: 7px; font-size: .72rem; font-weight: 700; font-family: var(--mono);
+  opacity: .6;
+}
+
+/* the rest of the parameters */
+.control-grid {
+  display: grid; gap: 16px 18px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  border-top: 1px solid rgb(234 242 246 / .12);
+  padding-top: 20px;
+}
+
+.field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+/* Scoped to .field on purpose: a bare `label` rule also hit the checkbox in the
+   footer, which is a sentence and not a column heading. */
+.field label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
 select, input[type="number"], input[type="date"] {
-  font: inherit; padding: 10px 12px; border-radius: 8px; height: 44px;
-  border: 1px solid var(--border); background: var(--bg); color: var(--text);
-  min-width: 0; width: 100%;
+  font: inherit; padding: 11px 13px; border-radius: 9px; height: 46px;
+  border: 1px solid rgb(234 242 246 / .2); background: rgb(255 255 255 / .07);
+  color: #f2f7fa; min-width: 0; width: 100%;
 }
+select option { background: #0f3b4c; color: #f2f7fa; }
 select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 2px;
+  outline: 2px solid var(--gold); outline-offset: 2px;
 }
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(.85); cursor: pointer; }
 
-/* A unit label inside the box, so "100" reads as "100 km" without a wider column. */
-.input-suffix { position: relative; display: flex; align-items: center; }
-.input-suffix input { padding-right: 44px; }
+/* A unit label sitting inside the box, so "100" reads as "100 km" without a
+   wider column. The wrapper must stay `position: relative` or the absolutely
+   positioned suffix drops below the field — which is exactly how this looked
+   when a stale stylesheet was being served. */
+.input-suffix { position: relative; display: flex; align-items: center; width: 100%; }
+.input-suffix input { padding-right: 46px; }
 .input-suffix .suffix {
-  position: absolute; right: 12px; font-size: .82rem; color: var(--text-soft);
+  position: absolute; right: 13px; font-size: .8rem; color: rgb(234 242 246 / .6);
   pointer-events: none;
 }
 
-.field-check { justify-content: flex-end; }
-.checkbox {
-  display: flex; align-items: center; gap: 9px; min-height: 44px; cursor: pointer;
-  white-space: normal; font-weight: 500; color: var(--text);
-  border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; background: var(--bg);
-}
-.checkbox input { width: 17px; height: 17px; flex: none; accent-color: var(--accent); }
-.checkbox span { font-size: .88rem; line-height: 1.2; }
+.range-pair { display: flex; align-items: center; gap: 8px; }
+.range-sep { color: var(--gold); font-size: .95rem; flex: none; }
 
-/* Reserved by a non-breaking space in the markup so every cell keeps the same
-   height whether or not it has something to say. */
-/* Wraps rather than truncating: it is the last element in the cell, so growing
-   downward cannot push a neighbouring label or control out of line. */
+/* Only the profile field carries a hint. It does not need a matching spacer in
+   the other fields: the grid rows are top-aligned, so what hangs below one
+   control cannot move the control beside it. `min-height` only stops the row
+   from jumping when the text arrives from /api/profiles. */
 .hint {
-  margin: 0; font-size: .76rem; color: var(--text-soft); font-family: var(--mono);
-  min-height: 1.1em; line-height: 1.35;
+  margin: 0; font-size: .74rem; color: rgb(234 242 246 / .55);
+  font-family: var(--mono); min-height: 1.1em; line-height: 1.35;
 }
+
+.control-footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgb(234 242 246 / .12); padding-top: 18px;
+}
+
+.checkbox {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  font-size: .9rem; font-weight: 500; color: #dbe8ee;
+}
+.checkbox input { width: 18px; height: 18px; flex: none; accent-color: var(--gold); }
 
 .primary-button {
-  font: inherit; font-weight: 600; font-size: 1rem; padding: 13px 18px;
-  border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer;
+  font: inherit; font-weight: 700; font-size: 1rem; padding: 14px 30px;
+  border: 0; border-radius: 10px; cursor: pointer;
+  background: var(--gold); color: #17232a; letter-spacing: .01em;
 }
-.primary-button:hover { filter: brightness(1.08); }
+.primary-button:hover { filter: brightness(1.07); }
 .primary-button[disabled] { opacity: .55; cursor: progress; }
+
+@media (max-width: 560px) {
+  .control-footer { flex-direction: column; align-items: stretch; }
+  .primary-button { width: 100%; }
+}
 
 /* --- main navigation ---------------------------------------------------- */
 
@@ -249,7 +312,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
   display: flex; gap: 20px; align-items: flex-start; justify-content: space-between;
   flex-wrap: wrap; margin-bottom: 18px;
 }
-.hero-title h2 { margin: 0 0 4px; font-size: 1.85rem; }
+.hero-title h2 { margin: 0 0 4px; font-size: 1.95rem; font-family: var(--serif); }
 .hero-sub { margin: 0; color: var(--text-soft); font-size: .93rem; }
 .verdict { margin: 10px 0 0; font-size: 1.02rem; font-weight: 600; }
 
@@ -568,7 +631,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
 .guide { display: grid; gap: 16px; margin: 22px 0 8px; }
 
 .guide-head { padding: 4px 2px 0; }
-.guide-head h2 { margin: 0 0 8px; font-size: 1.9rem; }
+.guide-head h2 { margin: 0 0 8px; font-size: 2rem; font-family: var(--serif); }
 .guide-intro { margin: 0 0 10px; font-size: 1.02rem; color: var(--text); max-width: 70ch; }
 .guide-caveat {
   margin: 0; font-size: .88rem; color: var(--text-soft); max-width: 70ch;
@@ -600,7 +663,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
 
 .lake-block { margin-top: 8px; }
 .lake-title {
-  margin: 0 0 4px; font-size: 1.35rem;
+  margin: 0 0 4px; font-size: 1.5rem; font-family: var(--serif);
   border-bottom: 2px solid var(--border); padding-bottom: 8px;
 }
 .lake-note { margin: 8px 0 14px; color: var(--text-soft); font-size: .93rem; max-width: 72ch; }
