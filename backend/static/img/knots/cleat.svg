@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 170" role="img" aria-label="Schema della volta su galloccia"><title>Volta su galloccia</title><style>.r{fill:none;stroke:#1c6ea4;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.r2{fill:none;stroke:#e0a341;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.gap{fill:none;stroke:#ffffff;stroke-width:19;stroke-linecap:round}.pole{fill:none;stroke:#8a9aa4;stroke-width:16;stroke-linecap:round}.lbl{font:600 12px Helvetica,Arial,sans-serif;fill:#4a6270}@media (prefers-color-scheme: dark){.gap{stroke:#10222e} .lbl{fill:#9db1c0} .pole{stroke:#5b6d78}}</style>
+  <g class="pole">
+    <path d="M70 86 L 190 86"/>
+    <path d="M70 86 L 54 72"/><path d="M70 86 L 54 100"/>
+    <path d="M190 86 L 206 72"/><path d="M190 86 L 206 100"/>
+  </g>
+  <path class="r" d="M20 130 C 60 130, 74 116, 92 106"/>
+  <path class="gap" d="M92 96 L 92 116"/>
+  <path class="r" d="M92 106 C 110 96, 120 76, 148 66"/>
+  <path class="gap" d="M150 60 L 150 76"/>
+  <path class="r2" d="M148 66 C 176 56, 188 78, 172 96 C 158 112, 120 104, 108 92"/>
+  <path class="gap" d="M112 86 L 112 100"/>
+  <path class="r2" d="M108 92 C 96 80, 118 62, 140 74"/>
+  <text class="lbl" x="14" y="158">giro, otto, otto, mezza chiave</text></svg>

@@ -118,6 +118,7 @@ async function boot() {
   $("profile").addEventListener("change", updateProfileHint);
   $("theme-toggle").addEventListener("click", toggleTheme);
   initTabs();
+  initNav();
 
   await Promise.all([loadHealth(), loadSpots(), loadProfiles(), loadImages()]);
   search();
@@ -904,4 +905,176 @@ function renderPhotos(payload) {
       </figure>`
     )
     .join("")}</div>`;
+}
+
+/* ---------------------------------------------------------------------------
+ * Guides: winds, mooring, knots, safety.
+ *
+ * Editorial content, fetched from /api/knowledge and rendered here. The rules of
+ * the rest of the app still apply: a claim about a specific lake shows its source,
+ * and a section with nothing sourced says so instead of filling the space.
+ * ------------------------------------------------------------------------- */
+
+const guideCache = {};
+let currentView = "plan";
+
+function initNav() {
+  for (const link of document.querySelectorAll(".navlink")) {
+    link.addEventListener("click", () => showView(link.dataset.view));
+  }
+}
+
+async function showView(view) {
+  currentView = view;
+  for (const link of document.querySelectorAll(".navlink")) {
+    if (link.dataset.view === view) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  }
+
+  const isPlan = view === "plan";
+  $("view-plan").hidden = !isPlan;
+  $("view-guide").hidden = isPlan;
+  // The hero band is scene-setting on the planner and just a space-eater on a
+  // page you came to read, so it shrinks out of the way.
+  $("hero-band").classList.toggle("compact", !isPlan);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (isPlan) return;
+
+  const panel = $("view-guide");
+  if (!guideCache[view]) {
+    panel.innerHTML = `<div class="panel empty"><span class="spinner"></span> Carico…</div>`;
+    guideCache[view] = await fetchJson(`/api/knowledge/${view}`);
+  }
+  const payload = guideCache[view];
+  if (payload.error) {
+    panel.innerHTML = `<div class="panel error">Non riesco a caricare la guida: ${escapeHtml(payload.error)}</div>`;
+    return;
+  }
+
+  const renderers = { winds: renderWinds, mooring: renderMooring, knots: renderKnots, safety: renderSafety };
+  panel.innerHTML = (renderers[view] || (() => ""))(payload.data);
+}
+
+function guideHeader(data) {
+  return `<header class="guide-head">
+    <h2>${data.emoji} ${escapeHtml(data.title)}</h2>
+    <p class="guide-intro">${escapeHtml(data.intro)}</p>
+    ${data.caveat ? `<p class="guide-caveat">${escapeHtml(data.caveat)}</p>` : ""}
+  </header>`;
+}
+
+/* Content files use **bold** in a few places; this is the only markup allowed. */
+function bold(text) {
+  return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+function bulletCard(section) {
+  return `<section class="panel guide-card">
+    <h3>${section.emoji || "•"} ${escapeHtml(section.title)}</h3>
+    <ul class="guide-list">${section.items.map((i) => `<li>${bold(i)}</li>`).join("")}</ul>
+  </section>`;
+}
+
+// --- winds -----------------------------------------------------------------
+
+function renderWinds(data) {
+  const how = (data.sections || [])
+    .map(
+      (section) => `<section class="panel guide-card">
+        <h3>${section.emoji} ${escapeHtml(section.title)}</h3>
+        ${section.body.map((p) => `<p>${bold(p)}</p>`).join("")}
+      </section>`
+    )
+    .join("");
+
+  const lakes = data.lakes
+    .map((lake) => {
+      const cards = lake.winds.length
+        ? `<div class="wind-grid">${lake.winds.map(windCard).join("")}</div>`
+        : `<p class="empty-note">${escapeHtml(lake.unknown_note || "Nessuna scheda disponibile.")}</p>`;
+      return `<section class="lake-block">
+        <h3 class="lake-title">${lake.emoji} ${escapeHtml(lake.name)}</h3>
+        <p class="lake-note">${escapeHtml(lake.note)}</p>
+        ${cards}
+      </section>`;
+    })
+    .join("");
+
+  return `${guideHeader(data)}${how}${lakes}
+    ${bulletCard(data.reading_the_water)}
+    <p class="attribution">${escapeHtml(data.sources_note)}</p>`;
+}
+
+function windCard(wind) {
+  const rows = [
+    ["Tipo", wind.type],
+    ["Direzione", wind.direction],
+    ["Orario tipico", wind.hours],
+    ["Intensità", wind.strength],
+  ];
+  return `<article class="panel wind-card">
+    <h4>${escapeHtml(wind.name)}${
+      wind.aka && wind.aka.length ? ` <span class="wind-aka">${escapeHtml(wind.aka.join(", "))}</span>` : ""
+    }</h4>
+    <dl class="wind-facts">
+      ${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${escapeHtml(v)}</dd></div>`).join("")}
+    </dl>
+    <p class="wind-sailing">${bold(wind.sailing)}</p>
+    ${wind.source ? `<p class="wind-source">Fonte: <a href="${escapeHtml(wind.source)}" target="_blank" rel="noopener noreferrer">${escapeHtml(new URL(wind.source).hostname)}</a></p>` : ""}
+  </article>`;
+}
+
+// --- mooring ---------------------------------------------------------------
+
+function renderMooring(data) {
+  const types = data.types
+    .map(
+      (t) => `<article class="panel guide-card">
+        <h3>${t.emoji} ${escapeHtml(t.title)} <span class="pill">${escapeHtml(t.difficulty)}</span></h3>
+        <p class="guide-when"><strong>Quando:</strong> ${escapeHtml(t.when)}</p>
+        <ol class="guide-steps">${t.steps.map((s) => `<li>${bold(s)}</li>`).join("")}</ol>
+        <p class="guide-lines"><strong>Cime:</strong> ${escapeHtml(t.lines)}</p>
+        <p class="guide-tip">💡 ${bold(t.tip)}</p>
+      </article>`
+    )
+    .join("");
+
+  return `${guideHeader(data)}
+    ${bulletCard(data.golden_rules)}
+    ${bulletCard(data.before)}
+    ${types}
+    ${bulletCard(data.kit)}`;
+}
+
+// --- knots -----------------------------------------------------------------
+
+function renderKnots(data) {
+  const knots = data.knots
+    .map(
+      (k) => `<article class="panel knot-card">
+        <div class="knot-figure">
+          <img src="${escapeHtml(k.image)}" alt="Schema del nodo ${escapeHtml(k.name)}" loading="lazy">
+        </div>
+        <div class="knot-body">
+          <h3>${escapeHtml(k.name)} <span class="knot-aka">${escapeHtml(k.aka)}</span></h3>
+          <p class="knot-rating">${k.emoji} ${escapeHtml(k.rating)}</p>
+          <p><strong>A cosa serve:</strong> ${escapeHtml(k.use)}</p>
+          <p><strong>Perché questo:</strong> ${escapeHtml(k.why)}</p>
+          <ol class="guide-steps">${k.steps.map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ol>
+          <p class="knot-mnemonic">🧠 ${escapeHtml(k.mnemonic)}</p>
+          <p class="knot-warning">${bold(k.warning)}</p>
+        </div>
+      </article>`
+    )
+    .join("");
+
+  return `${guideHeader(data)}${knots}${bulletCard(data.practice)}`;
+}
+
+// --- safety ----------------------------------------------------------------
+
+function renderSafety(data) {
+  return `${guideHeader(data)}
+    ${data.sections.map(bulletCard).join("")}
+    <p class="guide-disclaimer">${escapeHtml(data.disclaimer)}</p>`;
 }

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 170" role="img" aria-label="Schema della gassa d'amante"><title>Gassa d'amante</title><style>.r{fill:none;stroke:#1c6ea4;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.r2{fill:none;stroke:#e0a341;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.gap{fill:none;stroke:#ffffff;stroke-width:19;stroke-linecap:round}.pole{fill:none;stroke:#8a9aa4;stroke-width:16;stroke-linecap:round}.lbl{font:600 12px Helvetica,Arial,sans-serif;fill:#4a6270}@media (prefers-color-scheme: dark){.gap{stroke:#10222e} .lbl{fill:#9db1c0} .pole{stroke:#5b6d78}}</style>
+  <path class="r" d="M40 150 C 40 90, 70 60, 110 60"/>
+  <ellipse class="r" cx="150" cy="105" rx="52" ry="42"/>
+  <path class="gap" d="M118 70 L 150 52"/>
+  <path class="r2" d="M110 60 C 130 40, 150 42, 158 58 C 165 72, 150 84, 132 80"/>
+  <path class="gap" d="M126 96 L 150 96"/>
+  <path class="r2" d="M132 80 C 112 76, 104 92, 116 100 C 128 108, 150 100, 158 92"/>
+  <text class="lbl" x="14" y="164">dormiente</text>
+  <text class="lbl" x="196" y="30">corrente</text></svg>

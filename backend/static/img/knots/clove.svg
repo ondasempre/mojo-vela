@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 170" role="img" aria-label="Schema del nodo parlato attorno a un tubo"><title>Nodo parlato</title><style>.r{fill:none;stroke:#1c6ea4;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.r2{fill:none;stroke:#e0a341;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.gap{fill:none;stroke:#ffffff;stroke-width:19;stroke-linecap:round}.pole{fill:none;stroke:#8a9aa4;stroke-width:16;stroke-linecap:round}.lbl{font:600 12px Helvetica,Arial,sans-serif;fill:#4a6270}@media (prefers-color-scheme: dark){.gap{stroke:#10222e} .lbl{fill:#9db1c0} .pole{stroke:#5b6d78}}</style>
+  <path class="pole" d="M20 60 L 240 60"/>
+  <path class="r" d="M70 20 C 70 46, 96 46, 96 60 C 96 76, 70 76, 70 100"/>
+  <path class="gap" d="M132 44 L 132 78"/>
+  <path class="r" d="M70 100 C 70 118, 132 118, 132 92"/>
+  <path class="r2" d="M132 92 C 132 74, 106 74, 106 60 C 106 44, 132 44, 132 24"/>
+  <path class="gap" d="M112 88 L 140 88"/>
+  <path class="r2" d="M132 24 C 132 12, 168 12, 168 34 C 168 56, 120 56, 118 86"/>
+  <text class="lbl" x="14" y="140">due giri, il corrente passa sotto l'ultimo</text></svg>

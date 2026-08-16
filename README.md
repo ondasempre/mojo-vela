@@ -30,9 +30,10 @@ warnings and a web UI. See [docs/10-roadmap.md](docs/10-roadmap.md).
 |---|---|
 | Architecture & specification | complete — [docs/](docs/ARCHITECTURE.md) |
 | Scoring, best window, safety gates, ranking | working, tested (115 tests) |
-| API + web UI, Open-Meteo adapter, cache | working, tested (65 tests) |
+| API + web UI, Open-Meteo adapter, cache | working, tested (83 tests) |
 | Parking (car + moto), food, picnic, clubs from OpenStreetMap | working |
 | Webcams, events and photographs | containers ready, datasets ship empty on purpose |
+| Guides: winds, mooring, knots, safety | written, sourced, with SVG knot diagrams |
 | Mojo compute core | written; **not yet compiled** — see the caveat below |
 | Database, accounts, sailing log, AI | designed, not built (M6+) |
 

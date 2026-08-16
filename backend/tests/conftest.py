@@ -8,9 +8,12 @@ offline, and free of anyone's rate limit.
 from __future__ import annotations
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
+
+REPO_DATA = Path(__file__).resolve().parents[2] / "data"
 
 #: Coordinates used only inside tests. They are round, obviously-synthetic numbers,
 #: and they never leave the temporary directory a test creates. Real spot data is
@@ -65,6 +68,11 @@ def data_dir(tmp_path: Path) -> Path:
         ],
     }
     (spots / "test_lakes.json").write_text(json.dumps(ingested), encoding="utf-8")
+
+    # The guides are content shipped with the application, not user data, so the
+    # temporary data directory gets a copy: otherwise API tests would exercise a
+    # configuration no real deployment has.
+    shutil.copytree(REPO_DATA / "knowledge", tmp_path / "knowledge")
     return tmp_path
 
 

@@ -128,6 +128,8 @@ Interactive docs at `http://127.0.0.1:8000/docs` once the server is up.
 | `GET /api/spots/{id}/webcams` | 📷 webcams near the spot |
 | `GET /api/events?water_body=` | 🏁 regattas, courses and club events |
 | `GET /api/images?water_body=&spot_id=` | 📸 photographs for the hero band and gallery |
+| `GET /api/knowledge` | 📘 the guides available |
+| `GET /api/knowledge/{topic}` | 🌬️ winds · ⚓ mooring · 🪢 knots · 🛟 safety |
 | `GET /api/categories` | emoji and labels for POI categories |
 | `POST /api/cache/invalidate` | drop cached forecasts |
 
@@ -174,6 +176,30 @@ POIs are fetched **only for the spot you open**, never for all 30 candidates: Ov
 is donated infrastructure and one query per candidate would be slow and rude. So the
 accessibility component starts UNKNOWN and fills in as you explore.
 
+## The guides
+
+The top navigation switches between planning and four written sections, all in
+`data/knowledge/*.json` so they can be corrected and extended without touching code:
+
+**🌬️ Venti dei laghi** — why lake wind runs on a clock, then a card per wind for
+Garda (Pelèr, Ora), Como (Tivano, Breva) and Maggiore (Inverna, Maggiore, Mergozzo),
+with direction, typical hours, typical strength and what it means for your outing.
+**Every card cites its source**, and the page states plainly that these describe a
+typical fair-weather day and are not a forecast. Lake Iseo has no cards and says why:
+no sourced description was available, and an empty section beats an invented one.
+
+**⚓ Ormeggio** — the three rules that always apply, what to prepare before
+manoeuvring, then five manoeuvres (alongside, Italian-style stern-to, mooring buoy,
+anchoring, leaving the dock) with steps, lines and one hard-won tip each.
+
+**🪢 Nodi** — five knots with SVG diagrams drawn for this project: bowline, reef
+knot, clove hitch, figure eight, cleat hitch. Each one says what it is for, why that
+knot, the steps, a mnemonic, and — the part that matters — **when not to use it**.
+
+**🛟 Sicurezza** — pre-departure checks, thunderstorms (the real lake hazard), man
+overboard, cold water, calling for help, right of way. Explicitly not a course and
+not a regulation.
+
 ## Reading the UI
 
 - **Sailing score 0–100** with the component breakdown underneath — that is *why* the
@@ -189,7 +215,7 @@ accessibility component starts UNKNOWN and fills in as you explore.
 
 ```bash
 cd python  && python3 -m pytest      # 115 tests: engine, scoring, window, safety, ranking
-cd backend && python3 -m pytest      #  65 tests: API, adapters, POI, webcams, events, images
+cd backend && python3 -m pytest      #  83 tests: API, adapters, POI, webcams, events, images, guides
 ./scripts/verify_env.sh              # everything, including the Mojo core if installed
 ```
 

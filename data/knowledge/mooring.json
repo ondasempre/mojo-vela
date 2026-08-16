@@ -1,0 +1,114 @@
+{
+  "topic": "mooring",
+  "title": "Ormeggio e manovre",
+  "emoji": "⚓",
+  "intro": "L'ormeggio è la manovra che fa più danni e più figuracce, e quasi sempre per lo stesso motivo: si arriva senza un piano. Qui trovi i tipi di ormeggio più comuni sui laghi, cosa preparare prima, e le regole che valgono sempre.",
+  "caveat": "Queste sono nozioni generali di marineria, non istruzioni per la tua barca specifica. Ogni scafo ha il suo abbrivio, la sua deriva e il suo effetto evolutivo dell'elica. L'unico modo per imparare è provare in acqua libera, con calma, prima di dover manovrare fra due barche altrui.",
+  "golden_rules": {
+    "title": "Le tre regole che valgono sempre",
+    "emoji": "⭐",
+    "items": [
+      "**Piano prima, motore poi.** Prima di entrare in banchina decidi dove vai, da che lato accosti, chi fa cosa, quali cime e parabordi servono. Una manovra spiegata a voce alta a 50 m dalla banchina vale più di dieci minuti di correzioni.",
+      "**Alla velocità minima che ti dà governo, e non un nodo di più.** Se non hai governo sei troppo lento; se non puoi fermarti in due metri sei troppo veloce. In mezzo c'è la manovra giusta.",
+      "**Mai fermare la barca con una parte del corpo.** Non si para con le mani, non si scende a barca in movimento, non si mette il piede fra scafo e banchina. Un parabordo costa 20 euro, un dito no."
+    ]
+  },
+  "before": {
+    "title": "Prima di manovrare",
+    "emoji": "🧰",
+    "items": [
+      "Parabordi fuori e all'altezza giusta — a filo del punto più largo dello scafo, non appesi a caso.",
+      "Cime pronte e passate all'esterno delle draglie, non sopra: una cima che passa sopra la draglia si impiglia sempre.",
+      "Ruoli assegnati: chi è al timone, chi passa la cima di prua, chi quella di poppa.",
+      "Guarda il vento e la corrente **in banchina**, non quello che avevi al largo: dietro un molo il vento gira.",
+      "Decidi la via di fuga: se la manovra non riesce, dove vai? Una manovra senza via d'uscita è una manovra che finisce contro qualcosa."
+    ]
+  },
+  "types": [
+    {
+      "id": "banchina",
+      "title": "Ormeggio di fianco (alla banchina)",
+      "emoji": "🛥️",
+      "difficulty": "Base",
+      "when": "Pontili, banchine pubbliche, la maggior parte degli approdi dei laghi.",
+      "steps": [
+        "Avvicinati con un angolo di 20–30° rispetto alla banchina, dal lato sottovento se puoi.",
+        "Dai la cima di prua per prima e falla prendere a terra su una bitta a proravia.",
+        "Con la prua trattenuta, un colpo di motore avanti con timone verso il largo accosta dolcemente la poppa.",
+        "Fissa poppa, poi i traversini, poi le spring."
+      ],
+      "lines": "Prua, poppa e almeno una spring per lato: la spring è la cima che impedisce alla barca di scorrere avanti e indietro lungo la banchina, ed è quella che quasi tutti dimenticano.",
+      "tip": "Con vento che spinge **verso** la banchina, avvicinati parallelo e lascia che il vento faccia il lavoro. Con vento che spinge **via** dalla banchina, serve più angolo e più decisione."
+    },
+    {
+      "id": "italiana",
+      "title": "Ormeggio all'italiana (poppa in banchina)",
+      "emoji": "⚓",
+      "difficulty": "Intermedio",
+      "when": "Porti turistici e darsene con posti affiancati. È il classico posto barca con trappa.",
+      "steps": [
+        "Arriva di prua nella corsia, individua il posto e supera leggermente la barca sopravvento.",
+        "Cala l'ancora (o prendi la trappa/il corpo morto) a 3–4 lunghezze barca dalla banchina.",
+        "Indietreggia lentamente tenendo la catena in leggera tensione: è la catena che ti tiene dritto, non il timone.",
+        "Passa le due cime di poppa e recupera sulla catena finché la poppa è a distanza di passerella."
+      ],
+      "lines": "Due cime di poppa incrociate o parallele, più l'ancora/trappa a proravia in tensione. La barca non deve mai toccare la banchina con la poppa.",
+      "tip": "In retromarcia il timone risponde poco e in ritardo, e l'elica tira la poppa da un lato (effetto evolutivo). Prova in acqua libera da che parte tira la **tua** barca: sapere se la poppa scappa a dritta o a sinistra cambia tutta la manovra."
+    },
+    {
+      "id": "boa",
+      "title": "Ormeggio alla boa",
+      "emoji": "🔴",
+      "difficulty": "Base",
+      "when": "Campi boe dei circoli, rade, soste per il pranzo.",
+      "steps": [
+        "Avvicinati **contro vento o contro corrente**, quella che è più forte: la barca si ferma da sola.",
+        "Tieni la boa sul lato dove hai il mezzo marinaio e l'equipaggio pronto.",
+        "Ferma la barca con la boa a metà scafo, così chi recupera lavora sul punto più basso e stabile.",
+        "Passa la cima nell'anello e riportala a bordo: si ormeggia sempre con un doppino recuperabile, mai con un capo solo annodato che poi non riesci a mollare sotto tensione."
+      ],
+      "lines": "Un doppino dalla bitta di prua, passato nell'anello e ritornato a bordo. Se resti per la notte, aggiungine un secondo indipendente.",
+      "tip": "Se manchi la boa, non insistere a colpi di timone: allontanati, rifai il giro, riprova. Costa trenta secondi e nessuna dignità."
+    },
+    {
+      "id": "ancora",
+      "title": "Ancoraggio",
+      "emoji": "🪝",
+      "difficulty": "Intermedio",
+      "when": "Sosta in rada, bagno, pranzo. Sui laghi prealpini i fondali scendono in fretta: controlla la carta o l'ecoscandaglio prima di scegliere il punto.",
+      "steps": [
+        "Scegli un fondale che tenga (sabbia e fango tengono, roccia e alghe no) e riparato dal vento previsto **per le ore successive**, non da quello attuale.",
+        "Fermati sul punto, cala l'ancora fino al fondo, poi indietreggia lentamente filando catena.",
+        "Fila almeno 3 volte la profondità con catena tutta metallica, 5 volte se hai cima e in condizioni di vento.",
+        "Metti in tensione con un colpo di motore indietro e prendi due punti a terra allineati: se cambiano, stai arando."
+      ],
+      "lines": "Catena o calumo adeguato alla profondità. Un ancoraggio corto è un ancoraggio che ara.",
+      "tip": "Sui laghi il fondale può passare da 5 a 50 metri in poche decine di metri: quello che sembra un bel punto riparato spesso è troppo profondo per ancorare. Controlla prima di calare."
+    },
+    {
+      "id": "partenza",
+      "title": "Partire dalla banchina",
+      "emoji": "↗️",
+      "difficulty": "Base",
+      "when": "Ogni volta. È la manovra che si sottovaluta di più.",
+      "steps": [
+        "Guarda il vento: se ti spinge sulla banchina, dovrai staccare la prua o la poppa con una spring prima di uscire.",
+        "Molla le cime nell'ordine giusto, tenendo per ultima quella che ti serve per controllare il movimento.",
+        "Recupera i parabordi **dopo** essere uscito dal posto, non prima.",
+        "Esci a velocità minima e controlla dietro: nei porti si esce con la stessa prudenza con cui si entra."
+      ],
+      "lines": "L'ultima cima a mollare è una spring lunga passata a doppino, così puoi recuperarla da bordo senza nessuno a terra.",
+      "tip": "Se sei solo a bordo, prepara tutto in modo da non dover mai scendere. Ogni manovra che richiede di saltare a terra è una manovra progettata male."
+    }
+  ],
+  "kit": {
+    "title": "Cosa avere sempre a bordo",
+    "emoji": "🎒",
+    "items": [
+      "Almeno 4 parabordi e 4 cime d'ormeggio in buono stato",
+      "Un mezzo marinaio (gaffa) per recuperare boe e cime",
+      "Una cima di sicurezza lunga, separata da quelle d'ormeggio",
+      "Guanti: una cima sotto tensione che scorre in mano brucia sul serio"
+    ]
+  }
+}

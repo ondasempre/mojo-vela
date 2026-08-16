@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 170" role="img" aria-label="Schema del nodo piano"><title>Nodo piano</title><style>.r{fill:none;stroke:#1c6ea4;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.r2{fill:none;stroke:#e0a341;stroke-width:11;stroke-linecap:round;stroke-linejoin:round}.gap{fill:none;stroke:#ffffff;stroke-width:19;stroke-linecap:round}.pole{fill:none;stroke:#8a9aa4;stroke-width:16;stroke-linecap:round}.lbl{font:600 12px Helvetica,Arial,sans-serif;fill:#4a6270}@media (prefers-color-scheme: dark){.gap{stroke:#10222e} .lbl{fill:#9db1c0} .pole{stroke:#5b6d78}}</style>
+  <path class="r" d="M20 60 C 70 60, 92 60, 108 78 C 122 94, 140 96, 168 96"/>
+  <path class="r" d="M168 96 C 196 96, 210 84, 210 72 C 210 60, 196 52, 172 58"/>
+  <path class="gap" d="M104 74 L 128 96"/>
+  <path class="r2" d="M20 108 C 70 108, 92 108, 108 90 C 122 74, 140 72, 168 72"/>
+  <path class="gap" d="M150 72 L 176 60"/>
+  <path class="r2" d="M168 72 C 196 72, 210 84, 210 96 C 210 108, 196 116, 172 110"/>
+  <text class="lbl" x="14" y="145">destro su sinistro, poi sinistro su destro</text></svg>

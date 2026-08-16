@@ -1,0 +1,136 @@
+{
+  "topic": "winds",
+  "title": "I venti dei laghi",
+  "emoji": "🌬️",
+  "intro": "I grandi laghi prealpini hanno venti termici regolari: nascono dalla differenza di temperatura fra l'acqua, le montagne e la pianura, e per questo si ripetono ogni giorno di bel tempo con orari sorprendentemente costanti. Conoscerli vale più di qualsiasi previsione: ti dicono quando uscire e da che parte andare.",
+  "caveat": "Gli orari e le intensità qui sotto sono indicativi e descrivono la giornata tipo di bel tempo stabile. Cambiano con la stagione, la nuvolosità e il passaggio di perturbazioni. Non sono una previsione: guarda sempre il meteo del giorno e, se sei nuovo del posto, chiedi al circolo locale.",
+  "sections": [
+    {
+      "id": "come_funzionano",
+      "title": "Perché il vento sui laghi è un orologio",
+      "emoji": "⏱️",
+      "body": [
+        "Il motore è il sole. L'acqua si scalda e si raffredda molto più lentamente della roccia e della terra: di giorno i versanti e la pianura diventano più caldi del lago, l'aria calda sale e richiama aria da sopra l'acqua — nasce la brezza di valle, che risale il lago nel pomeriggio.",
+        "Di notte succede il contrario: le montagne si raffreddano per irraggiamento, l'aria fredda è più densa e scende lungo i pendii e le valli fino al lago. È la brezza di monte, che soffia verso il basso lago dalla notte alla mattina.",
+        "Ecco perché quasi tutti i laghi prealpini hanno due venti che si alternano: uno da nord al mattino e uno da sud nel pomeriggio, con una pausa di calma nel mezzo quando l'uno lascia il posto all'altro. Quella pausa è il momento in cui molti si fanno sorprendere fermi in mezzo al lago.",
+        "Le eccezioni contano: con cielo coperto il motore termico si spegne e i venti termici non arrivano; con una perturbazione in transito comanda il vento sinottico, che può essere più forte e molto meno prevedibile."
+      ]
+    }
+  ],
+  "lakes": [
+    {
+      "id": "lago_di_garda",
+      "name": "Lago di Garda",
+      "emoji": "🌊",
+      "note": "Il lago più ventoso e il più frequentato dai velisti, soprattutto l'alto lago fra Riva, Torbole e Malcesine.",
+      "winds": [
+        {
+          "name": "Pelèr",
+          "aka": ["Suer", "Vento", "Sover"],
+          "type": "Termico notturno / brezza di monte",
+          "direction": "da nord",
+          "hours": "dalle 2–3 di notte fino alle 11–12 del mattino",
+          "strength": "spesso 15–25 kn, può raggiungere 30–35 kn",
+          "sailing": "Vento del mattino, rinforza con l'arrivo del sole. Onda corta e ripida nell'alto lago. È il vento dei velisti esperti e dei windsurfisti: se sei alle prime armi, valuta di aspettare l'Ora.",
+          "source": "https://360gardalife.com/it/magazine/venti-lago-di-garda-ora-peler-balin/"
+        },
+        {
+          "name": "Ora",
+          "aka": ["Ora del Garda"],
+          "type": "Termico diurno / brezza di valle",
+          "direction": "da sud",
+          "hours": "da tarda mattina/primo pomeriggio fino a sera",
+          "strength": "tipicamente 10–20 kn, più decisa in primavera e inizio estate",
+          "sailing": "Vento molto regolare, entra dopo che il Pelèr è calato. Si forma da tanti piccoli venti che si uniscono fra Gargnano e Brenzone. Ha bisogno di forte irraggiamento: nelle giornate coperte non arriva, e in piena estate può indebolirsi quando l'escursione termica giorno-notte si riduce.",
+          "source": "https://360gardalife.com/it/magazine/venti-lago-di-garda-ora-peler-balin/"
+        }
+      ]
+    },
+    {
+      "id": "lago_di_como",
+      "name": "Lago di Como (Lario)",
+      "emoji": "🏔️",
+      "note": "Due venti regolari che si danno il cambio a metà mattina: chi conosce l'orario ha già metà del piano fatto.",
+      "winds": [
+        {
+          "name": "Tivano",
+          "aka": ["Tivàn"],
+          "type": "Termico notturno / brezza di monte",
+          "direction": "da nord-est, scende dalle montagne verso la Valtellina",
+          "hours": "dalle 6 alle 10 del mattino circa, tutto l'anno",
+          "strength": "intorno ai 5 m/s, cioè circa 10 kn",
+          "sailing": "Vento del primo mattino, regolare. Ideale per uscite presto e per chi vuole vento moderato. Cala verso le 10:30–11, lasciando spesso una fase di calma prima della Breva.",
+          "source": "https://wcv.it/i-venti-del-lago-di-como/"
+        },
+        {
+          "name": "Breva",
+          "aka": ["Bréva"],
+          "type": "Termico diurno / brezza di valle",
+          "direction": "da sud, risale il lago",
+          "hours": "entra fra le 10:30 e le 11, soffia fino a sera (indicativamente fino alle 18)",
+          "strength": "circa 7–8 m/s, cioè 14–16 kn; raramente violenta, ma di lunga durata",
+          "sailing": "Il vento classico del pomeriggio lariano: costante, prevedibile, perfetto per una crociera o un allenamento. Un segno locale: più il promontorio di Bellagio è velato dalla foschia, più la Breva sarà intensa; se l'aria è perfettamente tersa, spesso la Breva non arriva.",
+          "source": "https://wcv.it/i-venti-del-lago-di-como/"
+        }
+      ]
+    },
+    {
+      "id": "lago_maggiore",
+      "name": "Lago Maggiore (Verbano)",
+      "emoji": "⛰️",
+      "note": "Venti termici regolari, ma anche discese di aria dalle valli alpine che meritano rispetto.",
+      "winds": [
+        {
+          "name": "Inverna",
+          "aka": [],
+          "type": "Termico diurno / brezza di valle",
+          "direction": "da sud, risale il lago",
+          "hours": "dal primo pomeriggio",
+          "strength": "moderata, tipicamente 8–15 kn",
+          "sailing": "Il vento pomeridiano del Verbano, quello su cui si costruisce la maggior parte delle uscite e delle regate. In alcune configurazioni può avere origine di föhn ed essere caldo.",
+          "source": "https://centrovela.com/supporti/venti-lagomaggiore/"
+        },
+        {
+          "name": "Maggiore (Tramontana)",
+          "aka": ["Tramontana"],
+          "type": "Vento di gradiente lungo l'asse del lago",
+          "direction": "da nord-est, lungo l'asse del lago",
+          "hours": "variabile, spesso legato a configurazioni di bel tempo dopo il passaggio di un fronte",
+          "strength": "può essere forte e formare onda considerevole",
+          "sailing": "È il vento principale del lago. Soffia con forza lungo l'asse e alza un'onda formata: bello per chi ha esperienza, impegnativo per una barca piccola o un equipaggio poco allenato.",
+          "source": "https://centrovela.com/supporti/venti-lagomaggiore/"
+        },
+        {
+          "name": "Mergozzo",
+          "aka": ["Margoezz"],
+          "type": "Vento di caduta dalla Val d'Ossola",
+          "direction": "cade dall'alto sulla zona dell'Isola Madre",
+          "hours": "imprevedibile",
+          "strength": "molto forte, con raffiche riportate fino a ~100 km/h",
+          "sailing": "⚠️ Il vento più temuto del Lago Maggiore, per intensità e soprattutto per imprevedibilità. Arriva dall'alto, non lo vedi arrivare sull'acqua come un fronte di brezza. Se sei in zona Isole Borromee e il cielo verso l'Ossola cambia, rientra.",
+          "source": "https://centrovela.com/supporti/venti-lagomaggiore/"
+        }
+      ]
+    },
+    {
+      "id": "lago_iseo",
+      "name": "Lago d'Iseo (Sebino)",
+      "emoji": "💧",
+      "note": "Anche il Sebino ha il suo ritmo termico giornaliero, con un vento da nord al mattino e uno da sud nel pomeriggio.",
+      "winds": [],
+      "unknown_note": "Non ho ancora una descrizione con fonte verificabile per i venti dell'Iseo all'altezza di quelle di Garda, Como e Maggiore. Preferisco lasciare lo spazio vuoto piuttosto che riempirlo con nomi e orari che non ho controllato: se navighi qui e vuoi contribuire, il file è data/knowledge/winds.json."
+    }
+  ],
+  "reading_the_water": {
+    "title": "Leggere l'acqua e il cielo",
+    "emoji": "👀",
+    "items": [
+      "La raffica si vede prima di sentirla: una macchia scura sull'acqua che avanza verso di te. Guardala e preparati, non aspettare che ti arrivi addosso.",
+      "Le strisce di vento (wind lanes) indicano dove il vento è più teso: cerca le zone scure, evita quelle a specchio.",
+      "Sotto costa e sottovento alle montagne il vento è disturbato, gira e cade. Il vento buono è quasi sempre più al largo.",
+      "Nuvole che si sviluppano verticalmente nel pomeriggio d'estate significano temporale in formazione: sui laghi il colpo di vento che precede il temporale è la vera minaccia, non la pioggia.",
+      "Se il vento cala di colpo e l'aria diventa fredda, è spesso il preludio a un rovescio. Rientra."
+    ]
+  },
+  "sources_note": "Le descrizioni dei venti sono sintetizzate da fonti locali (circoli, scuole di vela, enti turistici) indicate su ogni scheda. SailWise non le presenta come previsione: sono conoscenza locale, da verificare sempre con il meteo del giorno."
+}

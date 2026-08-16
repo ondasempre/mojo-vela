@@ -158,20 +158,32 @@ body {
   border-radius: var(--radius); box-shadow: var(--shadow);
 }
 
-.controls {
-  display: grid; gap: 14px; padding: 18px; margin: 22px 0;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  align-items: end;
-}
-.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-.field-narrow { max-width: 150px; }
-.field-check { justify-content: flex-end; }
-.field-check label { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+/* --- controls -----------------------------------------------------------
+   Alignment rule: every field is a flex column with the label first and the
+   control second, and the rows are separate grids. Labels therefore always sit
+   on the same line and controls always start at the same y, whatever a cell
+   contains below them. The previous version used `align-items: end` on one big
+   grid, which lined the cells up by their *bottoms* — so a field with a hint
+   under it pushed its neighbours out of line. */
 
-label { font-size: .8rem; font-weight: 600; color: var(--text-soft); letter-spacing: .02em; }
+.controls { padding: 18px; margin: 22px 0; display: grid; gap: 16px; }
+
+.control-row { display: grid; gap: 14px; align-items: start; }
+.control-row-main { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.control-row-secondary {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding-top: 14px; border-top: 1px solid var(--border);
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+label {
+  font-size: .8rem; font-weight: 600; color: var(--text-soft); letter-spacing: .02em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 
 select, input[type="number"], input[type="date"] {
-  font: inherit; padding: 9px 10px; border-radius: 8px;
+  font: inherit; padding: 10px 12px; border-radius: 8px; height: 44px;
   border: 1px solid var(--border); background: var(--bg); color: var(--text);
   min-width: 0; width: 100%;
 }
@@ -179,14 +191,53 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
   outline: 2px solid var(--accent); outline-offset: 2px;
 }
 
-.hint { margin: 0; font-size: .78rem; color: var(--text-soft); font-family: var(--mono); }
+/* A unit label inside the box, so "100" reads as "100 km" without a wider column. */
+.input-suffix { position: relative; display: flex; align-items: center; }
+.input-suffix input { padding-right: 44px; }
+.input-suffix .suffix {
+  position: absolute; right: 12px; font-size: .82rem; color: var(--text-soft);
+  pointer-events: none;
+}
+
+.field-check { justify-content: flex-end; }
+.checkbox {
+  display: flex; align-items: center; gap: 9px; min-height: 44px; cursor: pointer;
+  white-space: normal; font-weight: 500; color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; background: var(--bg);
+}
+.checkbox input { width: 17px; height: 17px; flex: none; accent-color: var(--accent); }
+.checkbox span { font-size: .88rem; line-height: 1.2; }
+
+/* Reserved by a non-breaking space in the markup so every cell keeps the same
+   height whether or not it has something to say. */
+/* Wraps rather than truncating: it is the last element in the cell, so growing
+   downward cannot push a neighbouring label or control out of line. */
+.hint {
+  margin: 0; font-size: .76rem; color: var(--text-soft); font-family: var(--mono);
+  min-height: 1.1em; line-height: 1.35;
+}
 
 .primary-button {
-  font: inherit; font-weight: 600; padding: 11px 18px; border: 0; border-radius: 8px;
-  background: var(--accent); color: #fff; cursor: pointer; grid-column: 1 / -1;
+  font: inherit; font-weight: 600; font-size: 1rem; padding: 13px 18px;
+  border: 0; border-radius: 8px; background: var(--accent); color: #fff; cursor: pointer;
 }
 .primary-button:hover { filter: brightness(1.08); }
 .primary-button[disabled] { opacity: .55; cursor: progress; }
+
+/* --- main navigation ---------------------------------------------------- */
+
+.mainnav {
+  display: flex; gap: 8px; flex-wrap: wrap; padding-top: 18px; padding-bottom: 2px;
+}
+.navlink {
+  font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer;
+  padding: 9px 15px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-soft);
+}
+.navlink:hover { color: var(--text); border-color: var(--accent); }
+.navlink[aria-current="page"] {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
 
 .empty, .error { padding: 22px; text-align: center; color: var(--text-soft); margin-bottom: 18px; }
 .error { color: var(--bad); border-color: var(--bad); text-align: left; }
@@ -471,6 +522,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
   height: clamp(180px, 26vw, 320px); background: var(--foam);
   border-bottom: 1px solid var(--border);
 }
+.hero-band.compact { height: clamp(90px, 10vw, 130px); }
 .hero-band img {
   width: 100%; height: 100%; object-fit: cover; display: block;
   /* The band is much wider than it is tall, so `cover` crops vertically. Anchoring
@@ -509,4 +561,89 @@ select:focus-visible, input:focus-visible, button:focus-visible, summary:focus-v
 
 @media (max-width: 640px) {
   .hero-band { height: 150px; }
+}
+
+/* --- guides (winds, mooring, knots, safety) ------------------------------ */
+
+.guide { display: grid; gap: 16px; margin: 22px 0 8px; }
+
+.guide-head { padding: 4px 2px 0; }
+.guide-head h2 { margin: 0 0 8px; font-size: 1.9rem; }
+.guide-intro { margin: 0 0 10px; font-size: 1.02rem; color: var(--text); max-width: 70ch; }
+.guide-caveat {
+  margin: 0; font-size: .88rem; color: var(--text-soft); max-width: 70ch;
+  border-left: 3px solid var(--ok); padding-left: 12px;
+}
+
+.guide-card { padding: 20px 22px; }
+.guide-card h3 { margin: 0 0 12px; font-size: 1.15rem; }
+.guide-card p { margin: 0 0 10px; max-width: 72ch; }
+.guide-card p:last-child { margin-bottom: 0; }
+
+.guide-list { margin: 0; padding-left: 20px; display: grid; gap: 9px; }
+.guide-list li { max-width: 72ch; }
+
+.guide-steps { margin: 0 0 12px; padding-left: 22px; display: grid; gap: 7px; }
+.guide-steps li { max-width: 72ch; }
+
+.guide-when, .guide-lines { font-size: .93rem; color: var(--text-soft); }
+.guide-tip {
+  background: var(--foam); border-radius: 8px; padding: 10px 13px;
+  font-size: .92rem; margin-bottom: 0 !important;
+}
+.guide-disclaimer {
+  border-left: 3px solid var(--accent); padding-left: 13px; margin: 4px 0 0;
+  font-weight: 500; font-size: .92rem;
+}
+
+/* --- wind cards ---------------------------------------------------------- */
+
+.lake-block { margin-top: 8px; }
+.lake-title {
+  margin: 0 0 4px; font-size: 1.35rem;
+  border-bottom: 2px solid var(--border); padding-bottom: 8px;
+}
+.lake-note { margin: 8px 0 14px; color: var(--text-soft); font-size: .93rem; max-width: 72ch; }
+
+.wind-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+.wind-card { padding: 18px 20px; }
+.wind-card h4 { margin: 0 0 12px; font-size: 1.2rem; }
+.wind-aka { font-size: .78rem; font-weight: 400; color: var(--text-soft); }
+
+.wind-facts { margin: 0 0 12px; display: grid; gap: 7px; }
+.wind-facts > div { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: baseline; }
+.wind-facts dt {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--text-soft); margin: 0;
+}
+.wind-facts dd { margin: 0; font-size: .92rem; font-weight: 550; }
+
+.wind-sailing { margin: 0 0 10px; font-size: .93rem; max-width: 60ch; }
+.wind-source { margin: 0; font-size: .76rem; color: var(--text-soft); }
+
+/* --- knot cards ---------------------------------------------------------- */
+
+.knot-card {
+  display: grid; grid-template-columns: 260px 1fr; gap: 20px; padding: 20px 22px; align-items: start;
+}
+.knot-figure {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px;
+}
+.knot-figure img { width: 100%; height: auto; display: block; }
+.knot-body h3 { margin: 0 0 4px; font-size: 1.2rem; }
+.knot-aka { font-size: .78rem; font-weight: 400; color: var(--text-soft); }
+.knot-rating {
+  margin: 0 0 12px !important; font-size: .8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .05em; color: var(--text-soft);
+}
+.knot-body p { margin: 0 0 10px; font-size: .93rem; }
+.knot-mnemonic {
+  background: var(--foam); border-radius: 8px; padding: 9px 12px; font-size: .9rem;
+}
+.knot-warning { font-size: .88rem !important; color: var(--text-soft); margin-bottom: 0 !important; }
+
+@media (max-width: 720px) {
+  .knot-card { grid-template-columns: 1fr; }
+  .wind-facts > div { grid-template-columns: 96px 1fr; }
+  .guide-head h2 { font-size: 1.5rem; }
 }

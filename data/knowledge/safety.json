@@ -1,0 +1,81 @@
+{
+  "topic": "safety",
+  "title": "Sicurezza sui laghi",
+  "emoji": "🛟",
+  "intro": "I laghi prealpini sembrano innocui perché la riva è sempre in vista. È esattamente questo che li rende insidiosi: si esce leggeri, e il colpo di vento arriva in cinque minuti su acqua a 12 gradi con onda corta che ferma una barca piccola.",
+  "caveat": "⚠️ Questa pagina è un promemoria di buon senso, non un corso di sicurezza e non una fonte normativa. Le regole di navigazione cambiano da lago a lago e sono stabilite dalle autorità competenti: prima di uscire verifica il regolamento del tuo specchio d'acqua e, se puoi, fai un corso vero.",
+  "sections": [
+    {
+      "id": "prima",
+      "title": "Prima di mollare gli ormeggi",
+      "emoji": "✅",
+      "items": [
+        "**Giubbotti per tutti**, e indossati — non stivati sotto la cuccetta. Sui laghi l'acqua è fredda anche in agosto e il tempo utile di reazione è breve.",
+        "**Dì a qualcuno a terra** dove vai e a che ora pensi di rientrare. È la misura di sicurezza più efficace e costa un messaggio.",
+        "**Telefono carico in sacchetto stagno.** Sui laghi la copertura cellulare in genere c'è, ed è il tuo mezzo di chiamata più realistico se non hai VHF.",
+        "**Guarda il meteo del giorno e l'evoluzione**, non solo l'istante. Un pomeriggio d'estate con aria instabile può cambiare in mezz'ora.",
+        "**Controlla il livello di carburante** se hai il motore, e che parta *prima* di uscire dal porto.",
+        "**Una cima di rispetto, una pagaia o un remo**: se resti senza vento e senza motore, servono."
+      ]
+    },
+    {
+      "id": "temporali",
+      "title": "Temporali: il vero rischio dei laghi",
+      "emoji": "⛈️",
+      "items": [
+        "Il pericolo non è la pioggia, è il **colpo di vento** che precede il temporale: può passare da 5 a 40 nodi in pochi minuti, con direzione completamente diversa da quella che avevi.",
+        "**Segnali da guardare:** cumuli che crescono in verticale, base scura e netta, aria che si fa improvvisamente fredda, vento che cala di colpo, un fronte scuro sull'acqua che avanza.",
+        "**Se lo vedi arrivare, rientra subito.** Non c'è manovra migliore. Se non fai in tempo, riduci al massimo la vela prima che arrivi: si riduce sempre troppo tardi, mai troppo presto.",
+        "Fra le montagne il temporale può arrivare **da sopra il crinale senza preavviso visivo**: se il cielo verso le valli cambia, non aspettare di capire meglio.",
+        "In caso di fulmini, stai lontano dall'albero e da tutto ciò che è metallico, e non tenere in mano attrezzatura collegata alle sartie."
+      ]
+    },
+    {
+      "id": "uomo_a_mare",
+      "title": "Uomo a mare",
+      "emoji": "🆘",
+      "items": [
+        "**Grida «uomo a mare» e indica.** Una persona designata non fa altro che tenere lo sguardo fisso sulla persona in acqua: una testa fra le onde sparisce alla vista in pochi secondi.",
+        "**Lancia subito qualcosa che galleggia**, anche se sembra lontano: serve come riferimento visivo oltre che come appiglio.",
+        "**Segna la posizione** sul GPS o sul telefono se hai un tasto MOB.",
+        "Torna indietro con una manovra che conosci e che hai provato. La manovra migliore è quella che il tuo equipaggio sa fare, non quella teoricamente più elegante.",
+        "**Il recupero a bordo è la parte difficile**, non l'avvicinamento: una persona bagnata e infreddolita pesa moltissimo e non collabora. Pensa in anticipo a come la issi."
+      ]
+    },
+    {
+      "id": "freddo",
+      "title": "Acqua fredda e ipotermia",
+      "emoji": "🥶",
+      "items": [
+        "I laghi alpini restano freddi in profondità tutto l'anno: anche a fine estate la superficie può ingannare.",
+        "L'ingresso improvviso in acqua fredda provoca una **risposta da shock termico**: iperventilazione incontrollata nei primi secondi. È il momento in cui si annega, non dopo per il freddo.",
+        "Il giubbotto risolve proprio quel momento: ti tiene la testa fuori mentre il respiro va fuori controllo.",
+        "Dopo il recupero, togli il bagnato, copri, dai bevande calde **non alcoliche**, e vai a terra."
+      ]
+    },
+    {
+      "id": "emergenza",
+      "title": "Chiamare aiuto",
+      "emoji": "📞",
+      "items": [
+        "**112** è il numero unico europeo per le emergenze e funziona su tutto il territorio italiano, laghi compresi.",
+        "Quando chiami di': **dove sei** (nome del lago e riferimento a terra visibile), **cosa è successo**, **quante persone** a bordo, **che barca** e di che colore.",
+        "Se hai un VHF, sui laghi l'organizzazione dei soccorsi e i canali in ascolto variano: informati **prima** su come funziona sul tuo lago.",
+        "Non riagganciare finché non te lo dicono, e resta raggiungibile sul numero da cui hai chiamato."
+      ]
+    },
+    {
+      "id": "regole",
+      "title": "Regole di rotta, in breve",
+      "emoji": "↔️",
+      "items": [
+        "Fra due barche a vela: chi ha il vento a **dritta** ha la precedenza; se hanno le mure dallo stesso lato, chi è **sopravvento** si scosta.",
+        "Una barca a vela che procede a motore è, a tutti gli effetti, una barca a motore — anche se ha le vele issate.",
+        "**Traghetti e battelli di linea** hanno rotte fisse e manovrabilità limitata: sui laghi sono la principale insidia da traffico. Passa dietro, mai davanti.",
+        "In prossimità di zone di balneazione e riva valgono limiti di distanza e velocità stabiliti localmente: sono i regolamenti dei singoli laghi a dirlo.",
+        "La regola che sta sopra a tutte: **fai quello che serve a evitare la collisione**, anche se hai ragione."
+      ]
+    }
+  ],
+  "disclaimer": "SailWise è un supporto alla decisione, non un via libera alla sicurezza. Nessun punteggio, finestra o avviso di questa applicazione sostituisce i bollettini ufficiali, gli avvisi ai naviganti, i regolamenti locali e la valutazione di chi è responsabile della barca."
+}

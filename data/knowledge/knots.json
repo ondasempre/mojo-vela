@@ -1,0 +1,105 @@
+{
+  "topic": "knots",
+  "title": "I nodi che servono davvero",
+  "emoji": "🪢",
+  "intro": "Cinque nodi coprono il 95% di quello che fai in barca. Impararli bene vale molto più che conoscerne venti male: un nodo si giudica da tre cose — tiene sotto carico, non si stringe da solo, e si scioglie quando serve, anche dopo essere stato in tensione.",
+  "caveat": "I disegni qui sotto sono schemi per ricordare la struttura, non un corso. Un nodo si impara con la cima in mano: fallo dieci volte guardando, poi dieci volte senza guardare, poi al buio. È lì che diventa tuo.",
+  "knots": [
+    {
+      "id": "gassa",
+      "name": "Gassa d'amante",
+      "aka": "Bowline",
+      "emoji": "🔵",
+      "image": "/static/img/knots/bowline.svg",
+      "rating": "Il nodo dei nodi",
+      "use": "Fare un occhio fisso all'estremità di una cima: legare la scotta alla vela, passare una cima attorno a una bitta, recuperare qualcuno in acqua.",
+      "why": "Non si stringe sotto carico — l'occhio resta della dimensione che gli hai dato — e si scioglie facilmente anche dopo aver lavorato in tensione. È la ragione per cui è il primo nodo che si insegna.",
+      "steps": [
+        "Fai un piccolo occhio sul corrente, con il capo che esce da sopra.",
+        "Passa il corrente dal basso attraverso l'occhio.",
+        "Giralo attorno al dormiente e riportalo giù nello stesso occhio.",
+        "Stringi tenendo il dormiente e tirando l'occhio grande."
+      ],
+      "mnemonic": "Il serpente esce dal pozzo, gira attorno all'albero e torna nel pozzo.",
+      "warning": "Sotto carichi ciclici (dentro-fuori tensione) può allentarsi: se lo lasci lavorare da solo per giorni, controllalo o mettici una mezza chiave di sicurezza."
+    },
+    {
+      "id": "piano",
+      "name": "Nodo piano",
+      "aka": "Reef knot / nodo quadro",
+      "emoji": "🟢",
+      "image": "/static/img/knots/reef.svg",
+      "rating": "Solo per terzaroli e pacchi",
+      "use": "Chiudere una matafionatura (i terzaroli sulla randa), legare una vela sul boma, chiudere un sacco.",
+      "why": "Piatto, simmetrico, si scioglie tirando un capo all'indietro. Perfetto quando devi sciogliere in fretta al buio.",
+      "steps": [
+        "Destro sopra sinistro e incrocia.",
+        "Poi sinistro sopra destro e incrocia.",
+        "Stringi tenendo entrambe le coppie di capi."
+      ],
+      "mnemonic": "Destro su sinistro, sinistro su destro.",
+      "warning": "⚠️ **Non è un nodo di giunzione.** Non usarlo mai per unire due cime che devono reggere un carico: sotto tensione scivola, soprattutto se le cime hanno diametro diverso. Per unire due cime si usa la gassa doppia o il nodo di scotta."
+    },
+    {
+      "id": "parlato",
+      "name": "Nodo parlato",
+      "aka": "Clove hitch",
+      "emoji": "🟡",
+      "image": "/static/img/knots/clove.svg",
+      "rating": "Veloce, provvisorio",
+      "use": "Legare i parabordi alla draglia, fissare al volo una cima a un palo o a un anello.",
+      "why": "Si fa in due secondi con una mano sola e si regola in altezza scorrendo sulla draglia. È il nodo dei parabordi.",
+      "steps": [
+        "Passa la cima attorno al tubo e incrocia sopra sé stessa.",
+        "Fai un secondo giro nello stesso verso.",
+        "Infila il corrente sotto l'ultimo giro e stringi."
+      ],
+      "mnemonic": "Due giri, il secondo passa sotto il primo.",
+      "warning": "Si allenta se il carico cambia direzione o se la cima è rigida. Per qualcosa che deve tenere a lungo, aggiungi due mezzi colli di sicurezza."
+    },
+    {
+      "id": "otto",
+      "name": "Nodo a otto",
+      "aka": "Figure eight",
+      "emoji": "🟠",
+      "image": "/static/img/knots/figure8.svg",
+      "rating": "Il tappo",
+      "use": "Nodo d'arresto in fondo alle scotte, perché non scappino dal bozzello o dalla guida quando molli.",
+      "why": "Ingombra abbastanza da non passare nel foro, ma a differenza del nodo semplice non si stringe fino a diventare impossibile da sciogliere.",
+      "steps": [
+        "Fai un occhio.",
+        "Passa il corrente dietro il dormiente.",
+        "Infilalo nell'occhio dall'alto e stringi: deve disegnare un 8."
+      ],
+      "mnemonic": "Un occhio, un giro dietro, e dentro.",
+      "warning": "Controllalo a inizio stagione: sulle scotte nuove tende a stringersi e a stancare la cima sempre nello stesso punto."
+    },
+    {
+      "id": "galloccia",
+      "name": "Volta su galloccia",
+      "aka": "Cleat hitch",
+      "emoji": "🔴",
+      "image": "/static/img/knots/cleat.svg",
+      "rating": "Ormeggio quotidiano",
+      "use": "Dare volta a una cima d'ormeggio su una galloccia o bitta a T, in banchina o a bordo.",
+      "why": "Tiene qualsiasi carico e si molla in un attimo anche sotto tensione, che in ormeggio è esattamente quello che ti serve.",
+      "steps": [
+        "Un giro completo attorno alla base della galloccia.",
+        "Due o tre otto incrociati sui corni.",
+        "Chiudi con una mezza chiave rovesciata sull'ultimo otto — e basta: nessun nodo in più."
+      ],
+      "mnemonic": "Giro, otto, otto, chiave.",
+      "warning": "Non riempire la galloccia di giri: più otto metti, più è difficile mollare in fretta. Tre sono già tanti."
+    }
+  ],
+  "practice": {
+    "title": "Come esercitarsi",
+    "emoji": "🎯",
+    "items": [
+      "Tieni un metro di cima da 8 mm in tasca o in auto e fai i nodi mentre aspetti.",
+      "Cronometrati: la gassa d'amante deve venire in meno di 5 secondi.",
+      "Provali al buio e con i guanti: è così che li userai davvero.",
+      "Verifica sempre il nodo finito guardandone la forma, non tirando: un nodo sbagliato può reggere a mano e cedere sotto carico."
+    ]
+  }
+}

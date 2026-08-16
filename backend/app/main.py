@@ -31,6 +31,7 @@ from .adapters.weather_open_meteo import OpenMeteoProvider
 from .adapters.webcams import CuratedWebcamProvider, WindyWebcamProvider
 from .config import get_settings
 from .services.images import ImageService
+from .services.knowledge import KnowledgeService
 from .services.places import PlacesService, category_metadata
 from .services.planning import PlanningService
 from .services.spots import SpotService
@@ -100,6 +101,7 @@ class Container:
         )
         self.planning.attach_places(self.places if self.settings.poi_enabled else None)
         self.images = ImageService(self.settings.data_dir)
+        self.knowledge = KnowledgeService(self.settings.data_dir)
 
     async def aclose(self) -> None:
         await self.client.aclose()
@@ -372,6 +374,27 @@ async def images(water_body: str | None = None, spot_id: str | None = None) -> d
             else None
         },
     }
+
+
+@app.get("/api/knowledge")
+async def knowledge_index() -> dict:
+    """The guides: winds, mooring, knots, safety."""
+    c = deps()
+    return {"data": {"topics": c.knowledge.available()}, "meta": {"problems": c.knowledge.problems}}
+
+
+@app.get("/api/knowledge/{topic}")
+async def knowledge_topic(topic: str, water_body: str | None = None) -> dict:
+    c = deps()
+    payload = c.knowledge.get(topic)
+    if payload is None:
+        raise HTTPException(404, f"unknown topic: {topic}")
+
+    meta: dict = {}
+    if topic == "winds" and water_body:
+        # So the planner can deep-link "the winds of the lake you are looking at".
+        meta["highlight"] = water_body
+    return {"data": payload, "meta": meta}
 
 
 @app.get("/api/categories")
